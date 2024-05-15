@@ -1,0 +1,29 @@
+.form-wrapper {
+    border: 1px solid #cccccc; 
+    padding: 20px;
+    border-radius: 8px; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+    background-color: #ffffff; 
+}
+
+.form-group input {
+    border-radius: 9px; 
+    border: 1px solid #cccccc;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+#login-form button {
+    border-radius: 20px; /* Rounded corners for the button */
+    background-color: #0069d9; /*  primary blue */
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+}
+
+#login-form button:hover {
+    background-color: #0056b3; /* Darker blue when hovering */
+}

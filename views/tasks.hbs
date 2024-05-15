@@ -1,0 +1,138 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter New Flight</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/newticket.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Enter New Flight</h2>
+    <form id="newFlightForm"> 
+        <div class="form-group">
+            <label for="arrival">Arrival</label>
+            <input type="text" class="form-control" id="arrival" placeholder="Enter arrival's airport code">
+        </div>
+        <div class="form-group">
+            <label for="destination">Destination</label>
+            <input type="text" class="form-control" id="destination" placeholder="Enter destination's airport code">
+        </div>
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" class="form-control" id="date">
+        </div>
+        <div class="form-group">
+            <label for="AvSeats">Available Seats</label>
+            <input type="number" class="form-control" id="AvSeats" placeholder="Enter available seats (number)">
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" id="price" placeholder="Enter price (€)">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<script>
+    document.getElementById('newFlightForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        let isValid = true;
+        const warnings = {}; // Use an object for more dynamic error handling
+
+        const arrival = document.getElementById('arrival').value.toUpperCase(); // Convert to uppercase for consistency
+        const destination = document.getElementById('destination').value.toUpperCase();
+        const date = document.getElementById('date').value;
+        const AvSeats = parseInt(document.getElementById('AvSeats').value, 10);
+        const price = parseFloat(document.getElementById('price').value);
+
+        // Validation (Improved Error Messages)
+        if (!/^[A-Z]{3}$/.test(arrival)) {
+            warnings.arrival = 'Arrival must be exactly 3 letters (e.g., JFK).';
+            isValid = false;
+        }
+        if (!/^[A-Z]{3}$/.test(destination)) {
+            warnings.destination = 'Destination must be exactly 3 letters (e.g., LHR).';
+            isValid = false;
+        }
+        if (!date) {
+            warnings.date = 'Please select a date.';
+            isValid = false;
+        } else {
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const inputDate = new Date(date);
+            if (inputDate <= today) {
+                warnings.date = 'Date must be from tomorrow onward.';
+                isValid = false;
+            }
+        }
+        if (isNaN(AvSeats) || AvSeats < 1) {
+            warnings.AvSeats = 'Available seats must be a number greater than 0.';
+            isValid = false;
+        }
+        if (isNaN(price) || price <= 0) {
+            warnings.price = 'Price must be a number greater than 0.';
+            isValid = false;
+        }
+
+        // Displaying Errors (More User-Friendly)
+        const errorContainer = document.createElement('div');
+        errorContainer.classList.add('alert', 'alert-danger', 'mt-3');
+
+        if (!isValid) {
+            let errorMessages = '';
+            for (const key in warnings) {
+                if (warnings[key]) {
+                    errorMessages += `- ${warnings[key]}\n`;
+                }
+            }
+            errorContainer.textContent = errorMessages;
+            document.getElementById('newFlightForm').after(errorContainer); // Place error message after the form
+        } else {
+            // Remove any previous error message
+            const existingError = document.querySelector('.alert-danger');
+            if (existingError) {
+                existingError.remove();
+            }
+             // Send data to server (No need to include flightID)
+            const formData = {
+                arrival: arrival,
+                destination: destination,
+                date: date,
+                AvSeats: AvSeats,
+                price: price
+            };
+
+            fetch('/flight/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+                return response.text(); // Or response.json() if your server returns JSON data
+            })
+            .then(data => {
+                // Handle successful response from the server
+                alert(data); // Or update the UI accordingly
+            })
+            .catch(error => {
+                // Handle errors
+                alert('Error submitting form: ' + error); 
+            });
+        } 
+    });
+</script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Task list</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/style.css">
+        <header class="header">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/tasks">
+                        <img src="/img/logo.png" alt="Company Logo" class="logo">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarContent">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#contact">Contact</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="/img/login.png" alt="Profile Image" class="profile-img">
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    {{#if _login}}
+                                    <a class="dropdown-item" href="/login">Είσοδος</a>
+                                    {{/if}}
+                                    {{#if _signup}}
+                                    <a class="dropdown-item" href="/signup">Εγγραφή</a>
+                                    {{/if}}
+                                    {{#if _tasks}}
+                                    <a class="dropdown-item" href="/logout">Αποσύνδεση</a>
+                                    {{/if}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoNq3T0Jvt5dOydlbmSyENZpulA4JusoWB6OWNQqr12/XUozHlNHnPm3I4ZJ1U" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>   
+        <script>
+            $(document).ready(function () {
+                $('.navbar-toggler').click(function () {
+                    let expanded = $(this).attr('aria-expanded');
+                    if (expanded === 'true') {
+                        $('#navbarContent').collapse('hide');
+                    }
+                });
+
+                $(document).click(function (event) {
+                    let clickover = $(event.target);
+                    let $navbar = $(".navbar-collapse");               
+                    let _opened = $navbar.hasClass("show");
+                    if (_opened === true && !clickover.hasClass("navbar-toggler")) {
+                        $navbar.collapse('hide');
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+                   
+            {{{body}}}
+        </div>
+    </body>
+
+</html>
+

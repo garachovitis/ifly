@@ -1,0 +1,41 @@
+<div class="container mt-3">
+    <link rel="stylesheet" href="/css/signup.css">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center align-items-center">
+            <div class="form-wrapper" style="width: 100%; max-width: 20em;">
+                <h2 class="text-center">Εγγραφή</h2>
+                <form id="signup-form" method="POST" action="/signup">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="new-username" name="username" placeholder="Όνομα χρήστη">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="new-password" name="password" placeholder="Κωδικός πρόσβασης">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="new-password-2" name="password2" placeholder="Επαλήθευση κωδικού">
+                        <div id="password-error" class="text-danger"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Εγγραφή</button>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="/login">Είσοδος</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  document.getElementById('signup-form').addEventListener('submit', function(event) {
+    const password1 = document.getElementById('new-password').value;
+    const password2 = document.getElementById('new-password-2').value;
+    const errorDiv = document.getElementById('password-error');
+    
+    if (password1 !== password2) {
+      event.preventDefault();
+      errorDiv.textContent = "Οι κωδικοί δεν ταιριάζουν.";
+    } else {
+      errorDiv.textContent = "";
+    }
+  });
+</script>

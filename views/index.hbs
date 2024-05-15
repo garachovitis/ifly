@@ -1,0 +1,119 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ifly</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet"  href="/css/index.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Book your next Flight</h1>
+        <form action="#" method="get" class="search-form form-inline justify-content-center">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="From (Departure)" name="from">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="reverseButton">
+                        <img src="/img/rev.png" alt="Reverse">
+                    </button>
+                </div>
+                <input type="text" class="form-control" placeholder="To (Destination)" name="to">
+            </div>
+            
+            <div class="input-group mb-3">
+                <input type="date" class="form-control" name="departure_date">
+                <input type="date" class="form-control return-date" name="return_date" style="display: none;">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        
+        <div class="form-check mt-3 text-center">
+            <input class="form-check-input" type="checkbox" id="roundTripCheck">
+            <label class="form-check-label" for="roundTripCheck">Round Trip</label>
+        </div>
+    </div>
+    
+
+        <button onclick="window.location.href='#'" class="btn btn-secondary my-3">Filter by</button>
+        <div class="list-group" id="flightList">
+            {{#each flights}}
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{arrival}} to {{destination}}</h5>
+                        <small>{{formatDate date}}</small>
+                    </div>
+                    <p class="mb-1">Price: {{price}} €</p>
+                </a>
+            {{/each}}
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        // ... (Your existing JavaScript code for round trip and reverse button) ...
+
+        // Fetch flight data from your API
+        fetch('/api/v1/flights')
+            .then(response => response.json())
+            .then(flights => {
+                const flightList = document.getElementById('flightList');
+                flightList.innerHTML = ''; // Clear existing list items
+
+                flights.forEach(flight => {
+                    const listItem = `
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">${flight.arrival} to ${flight.destination}</h5>
+                                <small>${formatDate(flight.date)}</small>
+                            </div>
+                            <p class="mb-1">Price: ${flight.price} €</p>
+                        </a>
+                    `;
+                    flightList.innerHTML += listItem;
+                });
+            });
+
+        // Helper function for date formatting
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString(); // Customize as needed
+        }
+    </script>
+
+
+
+</body>
+</html>
+<script>
+    $(document).ready(function() {
+    $('a[href="admin.html"]').click(function() {
+        console.log('Admin page opened');
+    });
+});
+
+
+    $(document).ready(function() {
+        $('#roundTripCheck').change(function() {
+                if($(this).is(':checked')) {
+                    $('.return-date').show();
+                } else {
+                    $('.return-date').hide();
+                }
+            });
+
+        // Reverse Button functionality
+        $('#reverseButton').click(function() {
+            var fromValue = $('input[name="from"]').val();
+            var toValue = $('input[name="to"]').val();
+            $('input[name="from"]').val(toValue);
+            $('input[name="to"]').val(fromValue);
+        });
+    });
+</script>
