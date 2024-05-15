@@ -3,6 +3,14 @@ import { Flight as MyFlight } from '../model/flight.js'
 
 
 const model = await import(`../model/better-sqlite/ifly-better.mjs`);
+//------------
+export async function renderNewFlightForm(request, response) {
+   response.render("newflight"); 
+ }
+
+ //flightRouter.get('/newflight', taskListController.renderNewFlightForm);
+//export default flightRouter;
+//-----------
 
 export async function listAllTasksRender(request, response) {
    try {
@@ -43,81 +51,31 @@ export async function addFlight(request, response) {
        throw new Error("Missing or invalid flight data.");
      }
  
-     // Convert AvSeats to a number if it's a string
      const AvSeats = parseInt(flightData.AvSeats, 10);
  
      if (isNaN(AvSeats) || AvSeats < 1) {
        throw new Error("Invalid number of available seats.");
      }
  
-     // Create the newFlight object using the validated data
      const newFlight = new MyFlight(
-       undefined, // Let the database handle auto-incrementing flightID
-       flightData.arrival.toUpperCase(), // Standardize to uppercase
+       undefined, 
+       flightData.arrival.toUpperCase(), 
        flightData.destination.toUpperCase(),
        flightData.date,
-       AvSeats, // Use the converted avSeats
+       AvSeats, 
        parseFloat(flightData.price) 
      );
  
      await model.addFlight(newFlight);
      response.status(201).send("Flight added successfully");
    } catch (error) {
-     console.error("Error adding flight:", error); // Log the error for debugging
-     response.status(500).send("Error adding flight: " + error.message); // Send a user-friendly error message
+     console.error("Error adding flight:", error); 
+     response.status(500).send("Error adding flight: " + error.message); 
    }
  }
 
 
 
-export async function toggleTask(request, response) {
-   try {
-      const userId = request.session.userId;
-   }
-   catch (err) {
-      console.log(err);
-      response.redirect("/login");
-      return;
-   }
-   const userId = request.session.userId;
-   if (userId === undefined || userId === null) {
-      response.redirect("/login");
-      return;      
-   }
-
-   try {
-      await model.toggleTask(request.params.toggleTaskId, userId);
-      const allTasks = await model.getAllTasks(userId)
-      response.render('tasks', { tasks: allTasks, model: process.env.MY_MODEL, _tasks: true });
-   } catch (error) {
-      response.send(error);
-   }
-}
-
-export async function removeTask(request, response) {
-   try {
-      const userId = request.session.userId;
-   }
-   catch (err) {
-      console.log(err);
-      response.redirect("/login");
-      return;
-   }
-   const userId = request.session.userId;
-   if (userId === undefined || userId === null) {
-      response.redirect("/login");
-      return;      
-   }
-
-   try {
-      model.removeTask(request.params.removeTaskId, userId)
-      const allTasks = await model.getAllTasks(userId)
-      response.render('tasks', { tasks: allTasks, model: process.env.MY_MODEL,  _tasks: true });
-   } catch (err) {
-      console.log(err)
-      response.send(err);
-   }
-}
 
 export async function renderLogin(request, response) {
    try {
@@ -146,11 +104,17 @@ export async function login(request, response) {
    else if (userFound === false) {
       response.redirect("/signup");
    }
+   //admin check--------
    else {
       request.session.userId = username;
-      response.redirect("/tasks");
-   }
-}
+  
+      if (username === "admin") {
+        response.redirect("/tasks"); 
+      } else {
+        response.redirect("/index"); 
+      }
+    }
+  }
 
 export async function signup(request, response) {
    try {

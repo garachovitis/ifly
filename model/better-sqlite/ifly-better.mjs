@@ -15,49 +15,9 @@ export let getAllTasks = (userId) => {
     }
 }
 
-export let addTask = (newTask, userId) => {
-    const stmt = sql.prepare('INSERT INTO task VALUES (null, ?, ?, CURRENT_TIMESTAMP, ?)');
-    let info;
 
-    try {
-        info = stmt.run(newTask.task, newTask.status, userId);
-        return true;
-    }
-    catch (err) {
-        console.log(err);
-        throw err;
-    }
-}
 
-export let toggleTask = (taskId, userId) => {
-    const stmt1 = sql.prepare('SELECT status FROM task WHERE id = ? AND user_id = ?');
-    const stmt2 = sql.prepare('UPDATE task SET status = ? WHERE id = ? AND user_id = ?');
-    let info;
 
-    try {
-        info = stmt1.all(taskId, userId);
-        const newStatus = 2 - info[0].status - 1;
-        info = stmt2.run(newStatus, taskId, userId);
-    }
-    catch (err) {
-        console.log(err);
-        throw err;
-    }
-}
-
-export let removeTask = (taskId, userId) => {
-    const stmt = sql.prepare('DELETE FROM task WHERE id = ? AND user_id = ?');
-    let info;
-
-    try {
-        info = stmt.run(taskId, userId);
-        return true;
-    }
-    catch (err) {
-        console.log(err);
-        throw err;
-    }
-}
 
 export let findUser = async (username, password) => {
     const stmt = sql.prepare('SELECT id, password FROM user WHERE username = ?');

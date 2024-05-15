@@ -1,15 +1,17 @@
-import express from 'express'
 
-const taskListRouter = express.Router();
+import express from 'express';
+const iflyRouter = express.Router();
+
 
 if (process.env.NODE_ENV !== 'production') {
     console.log('loading .env')
 }
 
-const taskListController = await import(`../controller/ifly-controller.mjs`);
+const iflyController = await import(`../controller/ifly-controller.mjs`);
 
-taskListRouter.route('/').get((req, res) => { res.redirect('/index') });
+iflyRouter.route('/').get((req, res) => { res.redirect('/tasks') });
 
-taskListRouter.get('/tasks', taskListController.listAllTasksRender);
+iflyRouter.get('/tasks', iflyController.listAllTasksRender);
 
-export default taskListRouter;
+
+export default iflyRouter;

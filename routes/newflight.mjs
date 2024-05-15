@@ -2,7 +2,7 @@ import express from 'express';
 const flightRouter = express.Router();
 
 // Import the controller once at the top level (not inside a route handler)
-const taskListController = await import('../controller/ifly-controller.mjs');
+const iflyController = await import('../controller/ifly-controller.mjs');
 
 // Redirection (Optional)
 flightRouter.get('/', (req, res) => {
@@ -10,7 +10,8 @@ flightRouter.get('/', (req, res) => {
 });
 
 // Add Flight Route (More Specific and RESTful)
-flightRouter.post('/flight/add', taskListController.addFlight); // Use plural 'flights' for REST convention
-flightRouter.get('/flights', taskListController.getAllFlights);
-
+flightRouter.post('/flight/add', iflyController.addFlight); // Use plural 'flights' for REST convention
+flightRouter.get('/flights', iflyController.getAllFlights);
+flightRouter.get('/', (req, res) => {res.render('newflight');});
+flightRouter.get('/newflight', iflyController.renderNewFlightForm);
 export default flightRouter;

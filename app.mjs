@@ -1,11 +1,12 @@
 import express from 'express';
 import session from "express-session";
 import exphbs from 'express-handlebars';
-import iflyRouter from './routes/index.mjs';
+import iflyRouter from './routes/admin.mjs';
 import flightRouter from './routes/newflight.mjs';
 import loginRouter from './routes/login.mjs';
 import logoutRouter from './routes/logout.mjs';
 import signupRouter from './routes/signup.mjs';
+import indexRouter from './routes/index.mjs';
 import bodyParser from 'body-parser';
 
 const app = express();
@@ -39,5 +40,6 @@ app.use("/", logoutRouter);
 app.use("/", signupRouter);
 app.use("/", iflyRouter);
 app.use("/", flightRouter);
+app.use("/",indexRouter);
 
 export { app as ifly };

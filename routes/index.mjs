@@ -1,16 +1,8 @@
-import express from 'express'
+import express from 'express';
+const indexRouter = express.Router();
 
-const iflyRouter = express.Router();
+indexRouter.get('/index', (req, res) => {
+  res.render('index'); // Render the index.hbs template
+});
 
-if (process.env.NODE_ENV !== 'production') {
-    console.log('loading .env')
-}
-
-const iflyController = await import(`../controller/ifly-controller.mjs`);
-
-iflyRouter.route('/').get((req, res) => { res.redirect('/tasks') });
-
-iflyRouter.get('/tasks', iflyController.listAllTasksRender);
-
-
-export default iflyRouter;
+export default indexRouter;
