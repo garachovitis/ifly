@@ -8,8 +8,6 @@ export async function renderNewFlightForm(request, response) {
    response.render("newflight"); 
  }
 
- //flightRouter.get('/newflight', taskListController.renderNewFlightForm);
-//export default flightRouter;
 //-----------
 
 export async function listAllTasksRender(request, response) {
@@ -146,3 +144,82 @@ export async function getAllFlights(request, response) {
    }
  }
  
+ export async function getFlightsPaginated(offset, limit) {
+   const stmt = sql.prepare(`SELECT * FROM flight LIMIT ? OFFSET ?`);
+   try {
+       const flights = stmt.all(limit, offset);
+       return flights;
+   } catch (err) {
+       throw err;
+   }
+}
+
+export async function getTotalFlights() {
+   const stmt = sql.prepare(`SELECT COUNT(*) as total FROM flight`);
+   try {
+       const result = stmt.get();
+       return result.total;
+   } catch (err) {
+       throw err;
+   }
+}
+
+//-----------------GET FILTERED FLIGHTS-------------------
+export async function getFilteredFlightsPaginated(offset, limit, filters) {
+  let query = 'SELECT * FROM flight WHERE 1 = 1';
+   let params = [];
+
+   if (filters.from) {
+       query += ' AND arrival = ?';
+       params.push(filters.from);
+   }
+
+   if (filters.to) {
+       query += ' AND destination = ?';
+       params.push(filters.to);
+   }
+
+   if (filters.departure_date) {
+       query += ' AND date = ?';
+       params.push(filters.departure_date);
+   }
+
+   query += ' LIMIT ? OFFSET ?';
+   params.push(limit, offset);
+
+   const stmt = sql.prepare(query);
+   try {
+       const flights = stmt.all(params);
+       return flights;
+   } catch (err) {
+       throw err;
+   }
+}
+
+export async function getTotalFilteredFlights(filters) {
+  let query = 'SELECT COUNT(*) as total FROM flight WHERE 1 = 1';
+   let params = [];
+
+   if (filters.from) {
+       query += ' AND arrival = ?';
+       params.push(filters.from);
+   }
+
+   if (filters.to) {
+       query += ' AND destination = ?';
+       params.push(filters.to);
+   }
+
+   if (filters.departure_date) {
+       query += ' AND date = ?';
+       params.push(filters.departure_date);
+   }
+
+   const stmt = sql.prepare(query);
+   try {
+       const result = stmt.get(params);
+       return result.total;
+   } catch (err) {
+       throw err;
+   }
+}

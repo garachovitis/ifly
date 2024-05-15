@@ -3,117 +3,169 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ifly</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet"  href="/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
+
 <body>
     <div class="container mt-5">
         <h1>Book your next Flight</h1>
-        <form action="#" method="get" class="search-form form-inline justify-content-center">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="From (Departure)" name="from">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" id="reverseButton">
-                        <img src="/img/rev.png" alt="Reverse">
+
+        <form action="/search" method="get" class="search-form rounded shadow-sm p-4">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light rounded-left"><i class="fas fa-plane-departure"></i></span>
+                        </div>
+                        <input type="text" class="form-control rounded-right" placeholder="From" name="from" value="{{from}}">
+                    </div>
+                </div>
+                <div class="col-md-1 text-center">
+                    <button class="btn btn-light rounded-circle swap-button" type="button" id="reverseButton">
+                        <i class="fas fa-exchange-alt"></i>
                     </button>
                 </div>
-                <input type="text" class="form-control" placeholder="To (Destination)" name="to">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light rounded-left"><i class="fas fa-plane-arrival"></i></span>
+                        </div>
+                        <input type="text" class="form-control rounded-right" placeholder="To" name="to" value="{{to}}">
+                    </div>
+                </div>
             </div>
-            
-            <div class="input-group mb-3">
-                <input type="date" class="form-control" name="departure_date">
-                <input type="date" class="form-control return-date" name="return_date" style="display: none;">
+
+            <div class="row mt-3">
+                <div class="col-md-5">
+                    <input type="date" class="form-control rounded" name="departure_date" value="{{departure_date}}">
+                </div>
+                <div class="col-md-1 text-center"></div> 
+                <div class="col-md-5">
+                    <input type="date" class="form-control rounded return-date" name="return_date" style="display: none;" value="{{return_date}}">
+                </div>
             </div>
-            
-            <button type="submit" class="btn btn-primary">Search</button>
+
+            <div class="row mt-3">
+                <div class="col-md-12 text-center">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="roundTripCheck">
+                        <label class="custom-control-label" for="roundTripCheck">Round Trip</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-primary rounded-pill">Search</button>
+                </div>
+            </div>
         </form>
-        
-        <div class="form-check mt-3 text-center">
-            <input class="form-check-input" type="checkbox" id="roundTripCheck">
-            <label class="form-check-label" for="roundTripCheck">Round Trip</label>
-        </div>
-    </div>
-    
 
         <button onclick="window.location.href='#'" class="btn btn-secondary my-3">Filter by</button>
         <div class="list-group" id="flightList">
-            {{#each flights}}
-                <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">{{arrival}} to {{destination}}</h5>
-                        <small>{{formatDate date}}</small>
-                    </div>
-                    <p class="mb-1">Price: {{price}} €</p>
-                </a>
-            {{/each}}
         </div>
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {{#if hasPreviousPage}}
+                    <li class="page-item"><a class="page-link" href="/?page={{prevPage}}&from={{from}}&to={{to}}&departure_date={{departure_date}}&return_date={{return_date}}">Previous</a></li>
+                {{/if}}
+        
+                {{#times totalPages}}
+                    <li class="page-item {{#if (eq this currentPage)}}active{{/if}}"><a class="page-link" href="/?page={{add this 1}}&from={{from}}&to={{to}}&departure_date={{departure_date}}&return_date={{return_date}}">{{add this 1}}</a></li>
+                {{/times}}
+        
+                {{#if hasNextPage}}
+                    <li class="page-item"><a class="page-link" href="/?page={{nextPage}}&from={{from}}&to={{to}}&departure_date={{departure_date}}&return_date={{return_date}}">Next</a></li>
+                {{/if}}
+            </ul>
+        </nav>
+
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-        // ... (Your existing JavaScript code for round trip and reverse button) ...
+        document.addEventListener('DOMContentLoaded', function() {
+            const roundTripCheck = document.getElementById('roundTripCheck');
+            const returnDateInput = document.querySelector('.return-date');
+            const searchForm = document.querySelector('.search-form');
+            const flightList = document.getElementById('flightList');
 
-        // Fetch flight data from your API
-        fetch('/api/v1/flights')
-            .then(response => response.json())
-            .then(flights => {
-                const flightList = document.getElementById('flightList');
-                flightList.innerHTML = ''; // Clear existing list items
-
-                flights.forEach(flight => {
-                    const listItem = `
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">${flight.arrival} to ${flight.destination}</h5>
-                                <small>${formatDate(flight.date)}</small>
-                            </div>
-                            <p class="mb-1">Price: ${flight.price} €</p>
-                        </a>
-                    `;
-                    flightList.innerHTML += listItem;
-                });
+            roundTripCheck.addEventListener('change', () => {
+                returnDateInput.style.display = roundTripCheck.checked ? 'block' : 'none';
             });
 
-        // Helper function for date formatting
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString(); // Customize as needed
-        }
-    </script>
+            document.getElementById('reverseButton').addEventListener('click', () => {
+                const fromInput = document.querySelector('input[name="from"]');
+                const toInput = document.querySelector('input[name="to"]');
+                [fromInput.value, toInput.value] = [toInput.value, fromInput.value];
+            });
 
+            searchForm.addEventListener('submit', (event) => {
+                event.preventDefault();
 
+                const formData = new FormData(searchForm);
+                const params = new URLSearchParams(formData);
+                const queryString = params.toString();
 
-</body>
-</html>
-<script>
-    $(document).ready(function() {
-    $('a[href="admin.html"]').click(function() {
-        console.log('Admin page opened');
-    });
-});
+                fetch(`/search?${queryString}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        displayFlights(data.flights, data.currentPage, data.totalPages);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching filtered flights:", error);
+                        alert('Error fetching flights.'); 
+                    });
+            });
 
+            function displayFlights(flights, currentPage, totalPages) {
+                flightList.innerHTML = ''; // Clear previous results
 
-    $(document).ready(function() {
-        $('#roundTripCheck').change(function() {
-                if($(this).is(':checked')) {
-                    $('.return-date').show();
+                if (flights.length === 0) {
+                    flightList.innerHTML = '<p class="text-center">No flights found matching your criteria.</p>';
                 } else {
-                    $('.return-date').hide();
+                    flights.forEach(flight => {
+                        const listItem = `
+                            <button class="list-group-item list-group-item-action flight-button" 
+                                    data-flight-id="${flight.flightID}" 
+                                    data-arrival="${flight.arrival}"
+                                    data-destination="${flight.destination}"
+                                    data-date="${flight.date}"
+                                    data-avseats="${flight.AvSeats}"
+                                    data-price="${flight.price}">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">${flight.arrival} to ${flight.destination}</h5>
+                                    <small>${new Date(flight.date).toLocaleDateString()}</small>
+                                </div>
+                                <p class="mb-1">Price: ${flight.price} €</p>
+                            </button>
+                        `;
+                        flightList.innerHTML += listItem;
+                    });
                 }
-            });
+                const pagination = document.querySelector('.pagination');
+          pagination.innerHTML = '';
 
-        // Reverse Button functionality
-        $('#reverseButton').click(function() {
-            var fromValue = $('input[name="from"]').val();
-            var toValue = $('input[name="to"]').val();
-            $('input[name="from"]').val(toValue);
-            $('input[name="to"]').val(fromValue);
+          const prevPage = currentPage > 1 ? currentPage - 1 : null;
+          const nextPage = currentPage < totalPages ? currentPage + 1 : null;
+
+          if (prevPage) {
+              pagination.innerHTML += `<li class="page-item"><a class="page-link" href="/?page=${prevPage}">Previous</a></li>`;
+          }
+
+          for (let i = 1; i <= totalPages; i++) {
+              pagination.innerHTML += `
+                  <li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="/?page=${i}">${i}</a></li>
+              `;
+          }
+
+          if (nextPage) {
+              pagination.innerHTML += `<li class="page-item"><a class="page-link" href="/?page=${nextPage}">Next</a></li>`;
+          }
+            }
+
         });
-    });
-</script>
+    </script>
+</body>
