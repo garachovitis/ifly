@@ -6,7 +6,7 @@ const iflyController = await import('../controller/ifly-controller.mjs');
 
 // Redirection (Optional)
 flightRouter.get('/', (req, res) => {
-  res.redirect('/tasks'); // Assuming you want to redirect to a main task list page
+  res.redirect('/admin'); // Assuming you want to redirect to a main task list page
 });
 
 // Add Flight Route (More Specific and RESTful)

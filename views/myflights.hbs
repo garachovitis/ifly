@@ -1,0 +1,33 @@
+<div class="container mt-5">
+    <h1>My Flights</h1>
+
+    <div id="flightButtons" class="btn-group-vertical" role="group" aria-label="Flight Buttons">
+        </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async function() {
+        const flightButtonsContainer = document.getElementById('flightButtons');
+
+        try {
+            const response = await fetch('/myflights'); // Fetch flight data
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            const flights = await response.json();
+
+            flights.forEach(flight => {
+                const button = document.createElement('button');
+                button.classList.add('btn', 'btn-outline-primary', 'flight-button');
+                button.type = 'button';
+                button.dataset.flightId = flight.flightID; // Store flight ID in data attribute
+                button.textContent = `${flight.arrival} to ${flight.destination} - ${flight.date} (${flight.airline})`;
+
+                flightButtonsContainer.appendChild(button);
+            });
+        } catch (error) {
+            console.error('Error fetching or displaying flights:', error);
+            // Handle the error (e.g., display an error message to the user)
+        }
+    });
+</script>

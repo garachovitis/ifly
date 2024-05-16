@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="/css/index.css">
 </head>
 
+
 <body>
     <div class="container mt-5">
         <h1>Book your next Flight</h1>
-
         <form action="/search" method="get" class="search-form rounded shadow-sm p-4">
             <div class="row">
                 <div class="col-md-5">
@@ -62,30 +62,46 @@
             </div>
         </form>
 
-        <button onclick="window.location.href='#'" class="btn btn-secondary my-3">Filter by</button>
         <div class="list-group" id="flightList">
         </div>
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                {{#if hasPreviousPage}}
-                    <li class="page-item"><a class="page-link" href="/?page={{prevPage}}&from={{from}}&to={{to}}&departure_date={{departure_date}}&return_date={{return_date}}">Previous</a></li>
-                {{/if}}
-        
-                {{#times totalPages}}
-                    <li class="page-item {{#if (eq this currentPage)}}active{{/if}}"><a class="page-link" href="/?page={{add this 1}}&from={{from}}&to={{to}}&departure_date={{departure_date}}&return_date={{return_date}}">{{add this 1}}</a></li>
-                {{/times}}
-        
-                {{#if hasNextPage}}
-                    <li class="page-item"><a class="page-link" href="/?page={{nextPage}}&from={{from}}&to={{to}}&departure_date={{departure_date}}&return_date={{return_date}}">Next</a></li>
-                {{/if}}
-            </ul>
-        </nav>
 
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script>
+        <div class="container mt-5">
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <h2>Προτεινόμενες Πτήσεις</h2>
+                <div id="flightCarousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        {{#each recommendedFlights}}
+                            <div class="carousel-item {{#if @first}}active{{/if}}">
+                                <div class="carousel-caption">
+                                    <h3>{{this.arrival}} - {{this.destination}}</h3>
+                                    <p>{{this.airline}} | {{this.date}} | {{this.price}} €</p>
+                                    <button class="btn btn-primary flight-button" 
+                                        data-flight-id="${flight.flightID}" 
+                                        data-arrival="${flight.arrival}"
+                                        data-destination="${flight.destination}"
+                                        data-date="${flight.date}"
+                                        data-avseats="${flight.AvSeats}"
+                                        data-price="${flight.price}">Επιλογή</button>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <a class="carousel-control-prev" href="#flightCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#flightCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
         document.addEventListener('DOMContentLoaded', function() {
             const roundTripCheck = document.getElementById('roundTripCheck');
             const returnDateInput = document.querySelector('.return-date');
@@ -102,25 +118,7 @@
                 [fromInput.value, toInput.value] = [toInput.value, fromInput.value];
             });
 
-            searchForm.addEventListener('submit', (event) => {
-                event.preventDefault();
-
-                const formData = new FormData(searchForm);
-                const params = new URLSearchParams(formData);
-                const queryString = params.toString();
-
-                fetch(`/search?${queryString}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        displayFlights(data.flights, data.currentPage, data.totalPages);
-                    })
-                    .catch(error => {
-                        console.error("Error fetching filtered flights:", error);
-                        alert('Error fetching flights.'); 
-                    });
-            });
-
-            function displayFlights(flights, currentPage, totalPages) {
+            function displayFlights(flights) {
                 flightList.innerHTML = ''; // Clear previous results
 
                 if (flights.length === 0) {
@@ -144,28 +142,18 @@
                         `;
                         flightList.innerHTML += listItem;
                     });
-                }
-                const pagination = document.querySelector('.pagination');
-          pagination.innerHTML = '';
+                }          
 
-          const prevPage = currentPage > 1 ? currentPage - 1 : null;
-          const nextPage = currentPage < totalPages ? currentPage + 1 : null;
-
-          if (prevPage) {
-              pagination.innerHTML += `<li class="page-item"><a class="page-link" href="/?page=${prevPage}">Previous</a></li>`;
-          }
-
-          for (let i = 1; i <= totalPages; i++) {
-              pagination.innerHTML += `
-                  <li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="/?page=${i}">${i}</a></li>
-              `;
-          }
-
-          if (nextPage) {
-              pagination.innerHTML += `<li class="page-item"><a class="page-link" href="/?page=${nextPage}">Next</a></li>`;
-          }
-            }
+          
+            } 
 
         });
+
+
     </script>
+     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+   
+   
 </body>

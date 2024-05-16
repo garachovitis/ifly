@@ -1,5 +1,6 @@
-exports.Flight = function (flightID, arrival, destination, date, AvSeats, price) {
+exports.Flight = function (flightID,airline, arrival, destination, date, AvSeats, price) {
     this.flightID = flightID 
+    this.airline = airline
     this.arrival = arrival
     this.destination = destination
     this.date = date

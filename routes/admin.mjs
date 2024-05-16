@@ -1,5 +1,6 @@
 
 import express from 'express';
+
 const iflyRouter = express.Router();
 
 
@@ -9,9 +10,9 @@ if (process.env.NODE_ENV !== 'production') {
 
 const iflyController = await import(`../controller/ifly-controller.mjs`);
 
-iflyRouter.route('/').get((req, res) => { res.redirect('/tasks') });
+iflyRouter.route('/').get((req, res) => { res.redirect('/admin') });
 
-iflyRouter.get('/tasks', iflyController.listAllTasksRender);
+iflyRouter.get('/admin', iflyController.adminrender);
 
 
 export default iflyRouter;

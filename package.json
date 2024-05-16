@@ -9,7 +9,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"debug": "node ./node_modules/nodemon/bin/nodemon.js --inspect ./start.mjs",
 		"watch": "node ./node_modules/nodemon/bin/nodemon.js ./start.mjs",
-		"start": "npm ./start.mjs"
+		"start": "nodemon start.mjs"
 	},
 	"nodemonConfig": {
 		"ignore": [

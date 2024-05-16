@@ -10,7 +10,7 @@ export async function renderNewFlightForm(request, response) {
 
 //-----------
 
-export async function listAllTasksRender(request, response) {
+export async function adminrender(request, response) {
    try {
       const userId = request.session.userId;
    }
@@ -26,8 +26,8 @@ export async function listAllTasksRender(request, response) {
    }
 
    try {
-      const tasks = await model.getAllTasks(userId)
-      response.render('tasks', { tasks: tasks, model: process.env.MY_MODEL,  _tasks: true });
+      const admin = await model.getAdmin(userId)
+      response.render('admin', { admin: admin, model: process.env.MY_MODEL,  _admin: true });
    }
    catch (err) {
       response.send(err);
@@ -35,15 +35,16 @@ export async function listAllTasksRender(request, response) {
 }
 //-------------------------ADD FLIGHT--------------------------
 export async function addFlight(request, response) {
+  
    try {
      const flightData = request.body;
  
-     // Data Validation and Sanitization (Important!)
      if (
+       !flightData.airline ||
        !flightData.arrival ||
        !flightData.destination ||
        !flightData.date ||
-       !flightData.AvSeats || // Check for AvSeats directly from request body
+       !flightData.AvSeats || 
        !flightData.price
      ) {
        throw new Error("Missing or invalid flight data.");
@@ -57,6 +58,7 @@ export async function addFlight(request, response) {
  
      const newFlight = new MyFlight(
        undefined, 
+       flightData.airline.toUpperCase(),
        flightData.arrival.toUpperCase(), 
        flightData.destination.toUpperCase(),
        flightData.date,
@@ -74,7 +76,6 @@ export async function addFlight(request, response) {
 
 
 
-
 export async function renderLogin(request, response) {
    try {
       const userId = request.session.userId;
@@ -82,7 +83,7 @@ export async function renderLogin(request, response) {
           response.render("login", {_login: true , hideNav: true});
       }
       else {
-          response.redirect("/tasks"); // User is already connected
+          response.redirect("/admin"); // User is already connected
       }
   }
   catch (err) {
@@ -107,7 +108,7 @@ export async function login(request, response) {
       request.session.userId = username;
   
       if (username === "admin") {
-        response.redirect("/tasks"); 
+        response.redirect("/admin"); 
       } else {
         response.redirect("/index"); 
       }
@@ -124,7 +125,7 @@ export async function signup(request, response) {
           response.redirect("/login");
       }
       else {
-          response.redirect("/tasks");
+          response.redirect("/index");
       }
   }
   catch (err) {
@@ -139,87 +140,41 @@ export async function getAllFlights(request, response) {
      const flights = await model.getAllFlights();
      response.json(flights); 
    } catch (error) {
-     console.error("Error fetching flights:", error);
-     response.status(500).send("Error fetching flights: " + error.message);
+     console.error("Error fetching flights: get all", error);
+     response.status(500).send("Error fetching flights: get all2 " + error.message);
    }
  }
  
- export async function getFlightsPaginated(offset, limit) {
-   const stmt = sql.prepare(`SELECT * FROM flight LIMIT ? OFFSET ?`);
-   try {
-       const flights = stmt.all(limit, offset);
-       return flights;
-   } catch (err) {
-       throw err;
-   }
+
+
+
+
+export async function search(request, response) {
+  try {
+
+    const { from, to, departure_date, return_date} = request.query;
+    const _from = from.toUpperCase();
+    const _to = to.toUpperCase();
+
+    const go_flights = await model.search(_from, _to, departure_date,);
+    const return_flights = await model.search(_to, _from, return_date);
+
+    response.render(
+      'search',
+      {
+        go_flights,
+        go_flights_not_found : go_flights.length === 0,
+        return_flights,
+        return_flights_not_found : return_flights.length === 0 && return_date !== undefined && return_date !== '',
+      }
+    )
+  }
+  catch (err) {
+   console.error("Error fetching flights: search contr", err);
+    response.status(500).send("Error fetching flights: search-control -500 " + err.message);
+ 
+    return;
+  }
 }
 
-export async function getTotalFlights() {
-   const stmt = sql.prepare(`SELECT COUNT(*) as total FROM flight`);
-   try {
-       const result = stmt.get();
-       return result.total;
-   } catch (err) {
-       throw err;
-   }
-}
 
-//-----------------GET FILTERED FLIGHTS-------------------
-export async function getFilteredFlightsPaginated(offset, limit, filters) {
-  let query = 'SELECT * FROM flight WHERE 1 = 1';
-   let params = [];
-
-   if (filters.from) {
-       query += ' AND arrival = ?';
-       params.push(filters.from);
-   }
-
-   if (filters.to) {
-       query += ' AND destination = ?';
-       params.push(filters.to);
-   }
-
-   if (filters.departure_date) {
-       query += ' AND date = ?';
-       params.push(filters.departure_date);
-   }
-
-   query += ' LIMIT ? OFFSET ?';
-   params.push(limit, offset);
-
-   const stmt = sql.prepare(query);
-   try {
-       const flights = stmt.all(params);
-       return flights;
-   } catch (err) {
-       throw err;
-   }
-}
-
-export async function getTotalFilteredFlights(filters) {
-  let query = 'SELECT COUNT(*) as total FROM flight WHERE 1 = 1';
-   let params = [];
-
-   if (filters.from) {
-       query += ' AND arrival = ?';
-       params.push(filters.from);
-   }
-
-   if (filters.to) {
-       query += ' AND destination = ?';
-       params.push(filters.to);
-   }
-
-   if (filters.departure_date) {
-       query += ' AND date = ?';
-       params.push(filters.departure_date);
-   }
-
-   const stmt = sql.prepare(query);
-   try {
-       const result = stmt.get(params);
-       return result.total;
-   } catch (err) {
-       throw err;
-   }
-}

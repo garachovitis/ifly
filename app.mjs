@@ -7,6 +7,7 @@ import loginRouter from './routes/login.mjs';
 import logoutRouter from './routes/logout.mjs';
 import signupRouter from './routes/signup.mjs';
 import indexRouter from './routes/index.mjs';
+import searchRouter from './routes/search.mjs';
 import bodyParser from 'body-parser';
 
 import path from 'path';
@@ -64,5 +65,6 @@ app.use("/", signupRouter);
 app.use("/", iflyRouter);
 app.use("/", flightRouter);
 app.use("/", indexRouter);
+app.use("/", searchRouter);
 
 export { app as ifly };

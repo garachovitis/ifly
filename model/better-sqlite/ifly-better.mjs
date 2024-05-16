@@ -4,16 +4,16 @@ import db from 'better-sqlite3';
 import bcrypt from 'bcrypt';
 const sql = new db('model/db/tasks.sqlite', { fileMustExist: true });
 
-export let getAllTasks = (userId) => {
-    const stmt = sql.prepare("SELECT * FROM task WHERE user_id = ?");
-    let tasks;
-    try {
-        tasks = stmt.all(userId);
-        return tasks;
-    } catch (err) {
-        throw err;
-    }
-}
+export let getAdmin = (userId) => {
+     const stmt = sql.prepare("SELECT * FROM task WHERE user_id = ?");
+     let admin;
+     try {
+         admin = stmt.all(userId);
+         return admin;
+     } catch (err) {
+         throw err;
+     }
+ }
 
 
 
@@ -64,16 +64,18 @@ export let addFlight = (flightData) => {
     try {
         const stmt = sql.prepare(`
             INSERT INTO flight (
+                airline,
                 arrival, 
                 destination, 
                 date, 
                 AvSeats, 
                 price
-            ) VALUES (?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?)
     `);
     
 
         const result = stmt.run(
+            flightData.airline,
             flightData.arrival,
             flightData.destination,
             flightData.date,
@@ -98,13 +100,30 @@ export let addFlight = (flightData) => {
     }
 }; 
 
-export let getAllFlights = () => {
-    const stmt = sql.prepare("SELECT * FROM flight"); // Update to your actual table name 
-    let flights;
+export let getRecommendedFlights = (limit = 5) => { 
+    const stmt = sql.prepare(`SELECT * FROM flight ORDER BY RANDOM() LIMIT ?`); 
     try {
-        flights = stmt.all();
+        const flights = stmt.all(limit);
         return flights;
     } catch (err) {
         throw err;
+    }
+};
+
+
+
+export const search = (arrival, destination, date) => {
+    try {
+        const stmt = sql.prepare(`
+            SELECT arrival, destination, price, date, airline FROM flight
+            WHERE arrival = ? AND destination = ? AND date = ?
+        `);
+
+        const result = stmt.all(arrival, destination, date);
+
+        return result;
+    }   
+    catch(err) {
+        throw new Error(err);
     }
 }

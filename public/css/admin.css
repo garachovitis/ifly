@@ -1,43 +1,38 @@
-/* Style for the form container */
 form {
-    max-width: 400px; /* Sets maximum width of the form for better alignment */
-    margin: 20px auto; /* Centers the form on the page with margin from top */
-    padding: 20px; /* Adds padding inside the form */
-    background-color: #f8f9fa; /* Light grey background for visibility */
-    border: 1px solid #ccc; /* Adds a subtle border */
-    border-radius: 8px; /* Rounded corners for the form */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Adds a light shadow for depth */
-    display: flex; /* Uses flexbox for layout */
-    flex-direction: column; /* Stacks elements vertically */
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
 }
 
-/* General style for all inputs */
 input[type="text"],
 input[type="date"],
 input[type="submit"] {
-    height: 40px; /* Sets a fixed height for all inputs */
-    margin-bottom: 10px; /* Adds space between inputs */
-    border-radius: 20px; /* Rounded corners for inputs */
-    border: 1px solid #ccc; /* Subtle border for inputs */
-    padding: 0 15px; /* Padding inside the inputs */
-    font-size: 16px; /* Increases font size for better readability */
+    height: 40px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    padding: 0 15px;
+    font-size: 16px;
 }
 
-/* Specific style for the submit button */
 input[type="submit"] {
-    background-color: #007bff; /* Bootstrap primary blue */
-    color: white; /* White text color */
-    cursor: pointer; /* Cursor indicates button */
-    border-color: #007bff; /* Border color matches background */
-    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for hover effect */
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-color: #007bff;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
-/* Hover effect for the submit button */
 input[type="submit"]:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    border-color: #004085; /* Darker border on hover */
+    background-color: #0056b3;
+    border-color: #004085;
 }
-
 
 h1 {
     text-align: center;
@@ -60,19 +55,19 @@ h2 {
 }
 
 .button-group .btn {
-    margin: 0 10px; 
+    margin: 0 10px;
 }
 
 .list-group-item h5 {
-    color: #007bff; 
+    color: #007bff;
 }
 
 .list-group-item p {
-    color: #356894; 
+    color: #356894;
 }
 
 .list-group-item {
     margin-bottom: 10px;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1); 
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
 }
