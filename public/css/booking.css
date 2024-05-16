@@ -1,0 +1,29 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.card {
+    border-radius: 15px; /* iOS-like rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.card-header {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.form-control {
+    border-radius: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff; /* Primary blue */
+    border-color: #007bff;
+    border-radius: 10px;
+}
+
+#flightDetails .flight-details-section {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}

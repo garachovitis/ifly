@@ -8,11 +8,11 @@ if (process.env.NODE_ENV !== 'production') {
     dotenv.config();
 }
 
-const taskListController = await import(`../controller/ifly-controller.mjs`);
+const iflyController = await import(`../controller/ifly-controller.mjs`);
 
 signupRouter.get("/signup", async (request, response) => {
     response.render("signup", {_signup: true});
 });
-signupRouter.post("/signup", taskListController.signup);
+signupRouter.post("/signup", iflyController.signup);
 
 export default signupRouter;

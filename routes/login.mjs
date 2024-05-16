@@ -7,9 +7,9 @@ if (process.env.NODE_ENV !== 'production') {
     
 }
 
-const taskListController = await import(`../controller/ifly-controller.mjs`);
+const iflyController = await import(`../controller/ifly-controller.mjs`);
 
-loginRouter.get("/login", taskListController.renderLogin);
-loginRouter.post("/login", taskListController.login);
+loginRouter.get("/login", iflyController.renderLogin);
+loginRouter.post("/login", iflyController.login);
 
 export default loginRouter;

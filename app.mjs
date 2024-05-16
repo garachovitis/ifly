@@ -8,6 +8,7 @@ import logoutRouter from './routes/logout.mjs';
 import signupRouter from './routes/signup.mjs';
 import indexRouter from './routes/index.mjs';
 import searchRouter from './routes/search.mjs';
+
 import bodyParser from 'body-parser';
 
 import path from 'path';
@@ -44,16 +45,16 @@ app.engine('hbs', exphbs.engine({
         },
         // Add other helpers for pagination
 
-        hasPreviousPage: (currentPage) => currentPage > 1,
-        hasNextPage: (currentPage, totalPages) => currentPage < totalPages,
-        prevPage: (currentPage) => currentPage - 1,
-        nextPage: (currentPage) => currentPage + 1,
-        eq: (a, b) => a === b, // Helper for equality comparison
-        add: (a, b) => a + b, // Helper for addition
-        formatDate: function(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString(); // Or your preferred formatting
-        }
+        // hasPreviousPage: (currentPage) => currentPage > 1,
+        // hasNextPage: (currentPage, totalPages) => currentPage < totalPages,
+        // prevPage: (currentPage) => currentPage - 1,
+        // nextPage: (currentPage) => currentPage + 1,
+        // eq: (a, b) => a === b, // Helper for equality comparison
+        // add: (a, b) => a + b, // Helper for addition
+        // formatDate: function(dateString) {
+        //     const date = new Date(dateString);
+        //     return date.toLocaleDateString(); // Or your preferred formatting
+        // }
     }
 }));
 app.set('view engine', 'hbs');

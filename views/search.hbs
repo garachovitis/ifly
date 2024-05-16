@@ -6,12 +6,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="/css/search.css">
 </head>
-
 <body>
-<div class="container mt-5">
+  <div class="container mt-5">
 
-    <h2>Πτήσεις Αναχώρησης</h2>
-        <button id="nextStepButton" class="btn btn-prim" disabled>Επόμενο Βήμα</button>
+    <h2>Arrival</h2>
+        <button id="nextStepButton" class="btn btn-prim" disabled>Next Step</button>
 
     {{#if go_flights_not_found}}
         <span class='text-danger'>Δεν βρέθηκαν πτήσεις αναχώρησης</span>
@@ -23,12 +22,18 @@
                         <div class="card-body">
                             <h5 class="card-title">{{this.airline}}</h5>
                             <p class="card-text">
-                                <strong>Αναχώρηση:</strong> {{this.arrival}}<br>
-                                <strong>Προορισμός:</strong> {{this.destination}}<br>
-                                <strong>Ημερομηνία:</strong> {{this.date}}<br>
-                                <strong>Τιμή:</strong> {{this.price}}
+                                <strong>From:</strong> {{this.arrival}}<br>
+                                <strong>To:</strong> {{this.destination}}<br>
+                                <strong>Date:</strong> {{this.date}}<br>
+                                <strong>Price</strong> {{this.price}}<strong>€</strong>
                             </p>
-                            <button class="btn btn-primary">Επιλογή</button> 
+                            <button class="btn btn-primary book-button" 
+                                    data-flight-type="arrival"
+                                    data-flight-id="{{this.flightID}}"
+                                    data-arrival="{{this.arrival}}"
+                                    data-destination="{{this.destination}}"
+                                    data-date="{{this.date}}"
+                                    data-price="{{this.price}}">Book</button> 
                         </div>
                     </div>
                 </div>
@@ -38,7 +43,7 @@
 
     {{#if return_flights}}
         <hr>
-        <h2>Πτήσεις Επιστροφής</h2>
+        <h2>Return</h2>
         <div class="row">
             {{#each return_flights}}
                 <div class="col-md-4 mb-3">
@@ -46,12 +51,18 @@
                         <div class="card-body">
                             <h5 class="card-title">{{this.airline}}</h5>
                             <p class="card-text">
-                                <strong>Αναχώρηση:</strong> {{this.arrival}}<br>
-                                <strong>Προορισμός:</strong> {{this.destination}}<br>
-                                <strong>Ημερομηνία:</strong> {{this.date}}<br>
-                                <strong>Τιμή:</strong> {{this.price}}
+                                <strong>From:</strong> {{this.arrival}}<br>
+                                <strong>To:</strong> {{this.destination}}<br>
+                                <strong>Date:</strong> {{this.date}}<br>
+                                <strong>Price:</strong> {{this.price}} <strong>€</strong>
                             </p>
-                            <button class="btn btn-primary">Επιλογή</button>
+                            <button class="btn btn-primary book-button"
+                                    data-flight-type="return"
+                                    data-flight-id="{{this.flightID}}"
+                                    data-arrival="{{this.arrival}}"
+                                    data-destination="{{this.destination}}"
+                                    data-date="{{this.date}}"
+                                    data-price="{{this.price}}">Book</button>
                         </div>
                     </div>
                 </div>
@@ -59,5 +70,36 @@
         </div>
     {{/if}}
 </div>
+
+<script>
+  const nextStepButton = document.getElementById('nextStepButton');
+  const bookButtons = document.querySelectorAll('.book-button'); 
+
+  const selectedFlights = {}; 
+
+  bookButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const flightType = button.dataset.flightType;
+      selectedFlights[flightType] = {
+        id: button.dataset.flightId,
+        arrival: button.dataset.arrival,
+        destination: button.dataset.destination,
+        date: button.dataset.date,
+        price: button.dataset.price
+      };
+      
+      // Enable "Next Step" if at least one flight is selected
+      nextStepButton.disabled = !(selectedFlights.arrival || selectedFlights.return);
+    });
+  });
+
+  nextStepButton.addEventListener('click', () => {
+    // Store selected flight data in session or local storage
+    sessionStorage.setItem('selectedFlights', JSON.stringify(selectedFlights)); 
+
+    // Redirect to booking page
+    window.location.href = '/booking';
+  });
+</script>
 
 </body>

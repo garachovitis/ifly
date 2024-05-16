@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Booking Confirmation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/booking.css"> 
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card shadow-sm">card-header bg-primary text-white">
+                <h2 class="mb-0">Bookingcard-body">
+                <div id="flightDetails">
+                    </div>
+
+                <form-group">
+                    <label for="paymentMethod">Payment Method</label>
+                    <select class="form-control" id="paymentMethod">
+                        <option value="creditCard">Credit Card</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="applePay">Apple Pay</option>
+                    </select>
+                </div>
+
+                <div id="creditCardForm" style="display: none;">
+                    </div>
+
+                <div id="paypalForm" style="display: none;">
+                    </div>
+
+                <div id="applePayForm" style="display: none;">
+                    </div>
+
+                <button id="completeBookingButton" class="btn btn-primary btn-lg btn-block mt-4">Complete Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('completeBookingButton').addEventListener('click', async function () {
+            const flightIds = {
+                arrival: selectedFlights.arrival?.id,
+                return: selectedFlights.return?.id
+            };
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            // Get user ID (assuming it's stored in sessionStorage after login)
+            const userId = sessionStorage.getItem('userId');
+
+            try {
+                const response = await fetch('/booking', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId, flightIds, paymentMethod })
+                });
+
+                if (response.ok) {
+                    const confirmation = await response.json();
+                    // Clear selected flights from session storage
+                    sessionStorage.removeItem('selectedFlights');
+                    alert('Booking completed successfully! Confirmation: ' + confirmation);
+                    // Redirect to a confirmation page or user's bookings page
+                    window.location.href = '/my-bookings'; 
+                } else {
+                    alert('An error occurred during booking.');
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert('An error occurred during booking.');
+            }
+        });
+    });
+    </script>
+</body>

@@ -33,8 +33,37 @@ export async function adminrender(request, response) {
       response.send(err);
    }
 }
+
+
+
+export async function indexrender(request, response) {
+  try {
+    const userId = request.session.userId;
+ }
+ catch (err) {
+    console.log(err);
+    response.redirect("/login");
+    return;
+ }
+ const userId = request.session.userId;
+ if (userId === undefined || userId === null) {
+    response.redirect("/login");
+    return;      
+ }
+
+ try {
+    const index = await model.getIndex(userId)
+    response.render('index', { index: index, model: process.env.MY_MODEL,  _index: true });
+ }
+ catch (err) {
+    response.send(err);
+ }
+}
+
 //-------------------------ADD FLIGHT--------------------------
 export async function addFlight(request, response) {
+
+
   
    try {
      const flightData = request.body;
@@ -134,17 +163,6 @@ export async function signup(request, response) {
 }
 
 
-
-export async function getAllFlights(request, response) {
-   try {
-     const flights = await model.getAllFlights();
-     response.json(flights); 
-   } catch (error) {
-     console.error("Error fetching flights: get all", error);
-     response.status(500).send("Error fetching flights: get all2 " + error.message);
-   }
- }
- 
 
 
 

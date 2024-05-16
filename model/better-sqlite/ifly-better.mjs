@@ -2,10 +2,10 @@
 
 import db from 'better-sqlite3';
 import bcrypt from 'bcrypt';
-const sql = new db('model/db/tasks.sqlite', { fileMustExist: true });
+const sql = new db('model/db/ifly.sqlite', { fileMustExist: true });
 
 export let getAdmin = (userId) => {
-     const stmt = sql.prepare("SELECT * FROM task WHERE user_id = ?");
+     const stmt = sql.prepare("SELECT * FROM ticket WHERE user_id = ?");
      let admin;
      try {
          admin = stmt.all(userId);
@@ -15,6 +15,18 @@ export let getAdmin = (userId) => {
      }
  }
 
+
+
+ export let getIndex = (userId) => {
+    const stmt = sql.prepare("SELECT * FROM ticket WHERE user_id = ?");
+    let index;
+    try {
+        index = stmt.all(userId);
+        return index;
+    } catch (err) {
+        throw err;
+    }
+}
 
 
 
@@ -96,19 +108,10 @@ export let addFlight = (flightData) => {
                 throw new Error('The date must be from tomorrow onward.');
             }
         } 
-        throw err; // Re-throw other errors
+        throw err; 
     }
 }; 
 
-export let getRecommendedFlights = (limit = 5) => { 
-    const stmt = sql.prepare(`SELECT * FROM flight ORDER BY RANDOM() LIMIT ?`); 
-    try {
-        const flights = stmt.all(limit);
-        return flights;
-    } catch (err) {
-        throw err;
-    }
-};
 
 
 
