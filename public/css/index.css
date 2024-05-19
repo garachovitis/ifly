@@ -4,6 +4,7 @@ h1 {
 }
 
 .rounded-search-form {
+    max-width: 500px;
     border: 1px solid #ddd;
     padding: 20px; 
     border-radius: 15px;
@@ -11,6 +12,8 @@ h1 {
 }
 
 .input-group-text {
+    max-width: 500px;
+
     background-color: #f8f9fa; 
     border: none;
 }
