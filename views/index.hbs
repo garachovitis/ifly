@@ -9,10 +9,13 @@
 <body>
     <div class="container mt-5">
         <h1>Book your next Flight</h1>
+
+        <div class="row">
+    <div class="col-md-12">
         <form action="/search" method="get" class="search-form rounded shadow-sm p-4">
             <div class="row">
-                <div class="col-md-5">
-                    <div class="input-group">
+                <div class="col-md-5 ms-2"> <div class="input-group"> 
+
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-light rounded-left"><i class="fas fa-plane-departure"></i></span>
                         </div>
@@ -24,7 +27,7 @@
                         <i class="fas fa-exchange-alt"></i>
                     </button>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-5 ms-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-light rounded-left"><i class="fas fa-plane-arrival"></i></span>
@@ -35,10 +38,10 @@
             </div>
 
             <div class="row mt-3">
-                <div class="col-md-5">
+                <div class="col-md-5 text-center">
                     <input type="date" class="form-control rounded" name="departure_date" value="{{departure_date}}">
                 </div>
-                <div class="col-md-1 text-center"></div> 
+                <div class="col-md-1 "text-center""></div> 
                 <div class="col-md-5">
                     <input type="date" class="form-control rounded return-date" name="return_date" style="display: none;" value="{{return_date}}">
                 </div>
@@ -63,17 +66,17 @@
         <div id="offersCarousel" class="carousel slide mt-5" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="/img/offer1.jpg" class="d-block w-100" alt="Offer 1">
+                    <img src="/img/offer1.png" class="d-block w-100" alt="Offer 1">
                     <div class="carousel-caption d-none d-md-block">
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="/img/offer2.jpg" class="d-block w-100" alt="Offer 2">
+                    <img src="/img/offer2.png" class="d-block w-100" alt="Offer 2">
                     <div class="carousel-caption d-none d-md-block">
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="/img/offer3.jpg" class="d-block w-100" alt="Offer 3">
+                    <img src="/img/offer3.png" class="d-block w-100" alt="Offer 3">
                     <div class="carousel-caption d-none d-md-block">
                     </div>
                 </div>

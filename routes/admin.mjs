@@ -1,18 +1,18 @@
 
+//admin.mjs the route
 import express from 'express';
-
-const iflyRouter = express.Router();
-
+const adminRouter = express.Router();
 
 if (process.env.NODE_ENV !== 'production') {
     console.log('loading .env')
 }
 
-const iflyController = await import(`../controller/ifly-controller.mjs`);
+const iflyController = await import('../controller/ifly-controller.mjs');
 
-iflyRouter.route('/').get((req, res) => { res.redirect('/admin') });
+adminRouter.get('/admin', iflyController.adminrender); 
+adminRouter.get('/newflight', iflyController.renderNewFlightForm); 
+adminRouter.delete('/admin/:flightID', iflyController.removeFlight); 
 
-iflyRouter.get('/admin', iflyController.adminrender);
 
 
-export default iflyRouter;
+export default adminRouter;

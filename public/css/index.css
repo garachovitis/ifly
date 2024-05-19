@@ -3,85 +3,34 @@ h1 {
     margin-bottom: 20px;
 }
 
-.container {
-    width: 90%;
-    margin: 0 auto;
+.rounded-search-form {
+    border: 1px solid #ddd;
+    padding: 20px; 
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.search-form {
-    margin: 0 auto;
-    border: 2px solid #ccc; 
-    border-radius: 10px; 
-    max-width: 600px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-}
-
-#reverseButton img {
-    width: 24px;
-    cursor: pointer;
+.input-group-text {
+    background-color: #f8f9fa; 
+    border: none;
 }
 
 .form-control {
-    border-radius: 300px;
+    border-radius: 0.25rem;
+}
+
+.swap-button {
+    width: 50px;  /* Make the button round and centered */
+    height: 50px; 
 }
 
 .btn-primary {
-    width: 70%;
-    border-radius: 20px;
-    padding: 10px;
-}
-
-.list-group-item h5 {
-    color: #007bff;
-}
-
-.list-group-item p {
-    color: #356894;
-}
-
-.list-group-item {
-    margin-bottom: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.auth-container {
-    width: 80%;
-    position: absolute;
-    top: 20px;
-    right: 10px;
-}
-
-.caroysel-container{
-    width: 80%;
-    position: absolute;
-    top: 20px;
-    left: 10px;
-}
-
-.carousel-inner img {
     width: 100%;
-    height: auto;
+    border-radius: 20px;
 }
 
-.carousel-caption h5 {
-    background-color: rgba(0, 0, 0, 0.5);
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-.carousel-caption p {
-    background-color: rgba(0, 0, 0, 0.5);
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-.auth-container .dropdown-menu {
-    position: absolute;
-    top: 100%; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    display: none; 
+@media (max-width: 576px) {
+    .rounded-search-form {
+        margin: 0 15px;
+    }
 }

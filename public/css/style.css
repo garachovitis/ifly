@@ -1,3 +1,10 @@
+.logo {
+    font-size: 15rem;
+    font-weight: 500;
+    color: white;
+    border-radius: 10px;
+}
+
 .header .navbar {
     background: linear-gradient(to bottom, #007bff 0%, #0056b3 100%);
 }

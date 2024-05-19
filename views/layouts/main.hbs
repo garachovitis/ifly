@@ -3,6 +3,8 @@
 
     <head>
         <meta charset="UTF-8">
+        <link rel="shortcut icon" href="/img/logo.png" type="image/png">
+
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
             integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="/css/style.css">
@@ -10,18 +12,39 @@
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="/index">
-                        <img src="/img/logo.png" alt="Company Logo" class="logo">
+                        <img src="/img/logol.png" alt="Company Logo" class="logo">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarContent">
                         <ul class="navbar-nav ml-auto">
+                            {{#if _search}}
                             <li class="nav-item">
-                                <a class="nav-link" href="#" onclick="goHome()">Home</a>
+                                <a class="nav-link" href="" >Home</a>
                             </li>
+                            {{/if}}
+                            {{#if _booking}}
                             <li class="nav-item">
-                                <a class="nav-link" href="#contact">My flights</a>
+                                <a class="nav-link" href="/index">Home</a>
+                            </li>
+                            {{/if}}
+                            {{#if _admin}}
+                            <a class="nav-link" href="/newflight">Add Flight</a>
+                            {{/if}}
+                            {{#if _index}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/myflights">My flights</a>
+                            {{/if}}
+                            {{#if _search}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/myflights">My flights</a>
+                            {{/if}}
+                            {{#if _booking}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/myflights">My flights</a>
+                            {{/if}}
+
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -29,10 +52,10 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     {{#if _login}}
-                                    <a class="dropdown-item" href="/login">Log in</a>
+                                    <a class="dropdown-item" href="/signup">Sign up</a>
                                     {{/if}}
                                     {{#if _signup}}
-                                    <a class="dropdown-item" href="/signup">Sign up</a>
+                                    <a class="dropdown-item" href="/login">Log in</a>
                                     {{/if}}
                                     {{#if _admin}} 
                                     <a class="dropdown-item" href="/logout">Log Out</a>
@@ -43,9 +66,13 @@
                                     {{#if _search}}
                                     <a class="dropdown-item" href="/logout">Log Out</a>
                                     {{/if}}
-                                    {{#if _newflight}}
+                                   
+                                    {{#if _booking}}
                                     <a class="dropdown-item" href="/logout">Log Out</a>
                                     {{/if}}
+                                    {{#else}}
+                                    <a class="dropdown-item" href="/logout">Log Out</a>
+                                    {{/else}}
                                 </div>
                             </li>
                         </ul>

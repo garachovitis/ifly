@@ -1,3 +1,4 @@
+//ifly-controller.mjs
 import { Flight as MyFlight } from '../model/flight.js'
 
 
@@ -9,29 +10,21 @@ export async function renderNewFlightForm(request, response) {
  }
 
 //-----------
-
-export async function adminrender(request, response) {
-   try {
-      const userId = request.session.userId;
-   }
-   catch (err) {
-      console.log(err);
-      response.redirect("/login");
+export async function adminrender(req, res) { 
+  try {
+    const userId = req.session.userId;
+    if (!userId || userId !== 'admin') { 
+      res.redirect("/login");
       return;
-   }
-   const userId = request.session.userId;
-   if (userId === undefined || userId === null) {
-      response.redirect("/login");
-      return;      
-   }
+    }
 
-   try {
-      const admin = await model.getAdmin(userId)
-      response.render('admin', { admin: admin, model: process.env.MY_MODEL,  _admin: true });
-   }
-   catch (err) {
-      response.send(err);
-   }
+    const flights = await model.getFlights(); // Fetch all flights (no user filtering)
+
+    res.render('admin', { flights, _admin: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("An error occurred while fetching flights."); 
+  }
 }
 
 
@@ -195,4 +188,82 @@ export async function search(request, response) {
   }
 }
 
+// ifly-controller.mjs
+export async function renderBookingPage(req, res) { // Add 'res' parameter here
+  try {
+    const userId = req.session.userId;
+    if (!userId) {
+      res.redirect("/login");
+      return;
+    }
 
+    const flightIds = req.query.flightIds?.split(',').map(Number) || [];
+
+    const flights = await model.getFlightsForBooking(flightIds);
+
+    // Calculate total price
+    const total_price = flights.reduce((sum, flight) => sum + flight.price, 0);
+
+    res.render('booking', { 
+      flights, 
+      userId, 
+      _booking: true, 
+      total_price,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("An error occurred while processing your booking."); 
+  }
+}
+
+
+export async function completeBooking(request, response) {
+  try {
+    const { userId, flightIds } = request.body;
+    // Loop through flightIds and book tickets
+    for (const flightId of flightIds) {
+      await model.bookTicket(flightId, userId); 
+    }
+
+    response.status(200).send("Booking completed successfully");
+  } catch (error) {
+    console.error("Error completing booking:", error);
+    response.status(500).send("Error completing booking");
+  }
+}
+// ifly-controller.mjs
+
+export async function getFlightsForBooking(request, response) {
+  try {
+    const { flightIds } = request.body;
+    const flights = await model.getFlightsForBooking(flightIds); 
+    response.json(flights);
+  } catch (err) {
+    console.error(err);
+    response.status(500).json({ error: 'Failed to fetch flight data' });
+  }
+}
+
+export async function removeFlight(req, res) {
+  try {
+      const userId = req.session.userId;
+      
+        if (userId === undefined || userId === null) {
+          res.redirect("/login");
+          return;
+        }
+
+        const flightID = req.params.flightID; 
+        const wasDeleted = model.removeFlight(flightID, userId); // Pass userId, even though it's not used in the model
+
+        if (wasDeleted) {
+          const flights = await model.getFlights(); // Re-fetch all flights
+          res.render('admin', { flights, _admin: true }); // Re-render the admin page with updated data
+        } else {
+          res.status(404).send("Flight not found"); // Handle flight not found
+        }
+  } catch (err) {
+      console.error(err);
+      res.status(500).send("An error occurred while deleting the flight");
+  }
+}

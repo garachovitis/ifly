@@ -1,75 +1,77 @@
-<!DOCTYPE html>
-<html>
 <head>
-    <title>Booking Confirmation</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/booking.css"> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iFly - Booking</title>
+  <style>
+    .flight-summary {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container mt-5">
-        <div class="card shadow-sm">card-header bg-primary text-white">
-                <h2 class="mb-0">Bookingcard-body">
-                <div id="flightDetails">
-                    </div>
+  <div class="container">
+    <h1>Booking Summary</h1>
 
-                <form-group">
-                    <label for="paymentMethod">Payment Method</label>
-                    <select class="form-control" id="paymentMethod">
-                        <option value="creditCard">Credit Card</option>
-                        <option value="paypal">PayPal</option>
-                        <option value="applePay">Apple Pay</option>
-                    </select>
-                </div>
+    {{#if flights.length}}
+      <div id="bookingSummary" class="flight-summary">
+        <h2>Selected Flights:</h2>
+        <ul>
+          {{#each flights}}
+            <li>
+              {{this.airline}} - {{this.arrival}} to {{this.destination}} on {{this.date}} ({{this.price}}€)
+            </li>
+          {{/each}}
+        </ul>
+        <p><strong>Total Price:</strong> <span id="totalPrice">{{total_price}}</span>€</p> 
+      </div>
 
-                <div id="creditCardForm" style="display: none;">
-                    </div>
+      <button id="completeBooking">Complete Booking</button>
+    {{else}}
+      <p>No flights selected for booking.</p>
+    {{/if}}
+  </div>
 
-                <div id="paypalForm" style="display: none;">
-                    </div>
+<script>
+  const completeBookingButton = document.getElementById('completeBooking');
+  const totalPriceElement = document.getElementById('totalPrice');
 
-                <div id="applePayForm" style="display: none;">
-                    </div>
+    // Calculate total price on page load
+    const flights = JSON.parse(sessionStorage.getItem('selectedFlights'));
+    let totalPrice = 0;
+    if (flights) {
+      Object.values(flights).forEach(flight => {
+        totalPrice += parseFloat(flight.price);
+      });
+      totalPriceElement.textContent = totalPrice.toFixed(2); 
+    }
 
-                <button id="completeBookingButton" class="btn btn-primary btn-lg btn-block mt-4">Complete Booking</button>
-            </div>
-        </div>
-    </div>
+      if (completeBookingButton) { 
+    completeBookingButton.addEventListener('click', () => {
+      const userId = '{{user}}'; 
+      const flightIds = {{#each flights}}{{this.flightID}},{{/each}}; 
 
-    <script>
-        document.getElementById('completeBookingButton').addEventListener('click', async function () {
-            const flightIds = {
-                arrival: selectedFlights.arrival?.id,
-                return: selectedFlights.return?.id
-            };
-            const paymentMethod = document.getElementById('paymentMethod').value;
-
-            // Get user ID (assuming it's stored in sessionStorage after login)
-            const userId = sessionStorage.getItem('userId');
-
-            try {
-                const response = await fetch('/booking', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ userId, flightIds, paymentMethod })
-                });
-
-                if (response.ok) {
-                    const confirmation = await response.json();
-                    // Clear selected flights from session storage
-                    sessionStorage.removeItem('selectedFlights');
-                    alert('Booking completed successfully! Confirmation: ' + confirmation);
-                    // Redirect to a confirmation page or user's bookings page
-                    window.location.href = '/my-bookings'; 
-                } else {
-                    alert('An error occurred during booking.');
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                alert('An error occurred during booking.');
-            }
-        });
+      fetch('/booking/completeBooking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId, flightIds })
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Booking completed successfully!');
+          window.location.href = '/index'; 
+        } else {
+          alert('An error occurred during booking.');
+        }
+      });
     });
-    </script>
+  }
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>

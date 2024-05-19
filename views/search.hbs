@@ -75,31 +75,61 @@
   const nextStepButton = document.getElementById('nextStepButton');
   const bookButtons = document.querySelectorAll('.book-button'); 
 
-  const selectedFlights = {}; 
+  // Initialize selectedFlightIds array (not an object)
+  const selectedFlightIds = []; 
 
   bookButtons.forEach(button => {
     button.addEventListener('click', () => {
-      const flightType = button.dataset.flightType;
-      selectedFlights[flightType] = {
-        id: button.dataset.flightId,
-        arrival: button.dataset.arrival,
-        destination: button.dataset.destination,
-        date: button.dataset.date,
-        price: button.dataset.price
-      };
+      const flightId = button.dataset.flightId;
       
-      // Enable "Next Step" if at least one flight is selected
-      nextStepButton.disabled = !(selectedFlights.arrival || selectedFlights.return);
+      // Toggle selection state and update UI
+      if (button.classList.contains('selected')) {
+        button.classList.remove('selected');
+        selectedFlightIds.splice(selectedFlightIds.indexOf(flightId), 1); 
+      } else {
+        button.classList.add('selected');
+        selectedFlightIds.push(flightId);
+      }
+
+      // Enable/disable the "Next Step" button
+      nextStepButton.disabled = selectedFlightIds.length === 0;
     });
   });
 
-  nextStepButton.addEventListener('click', () => {
-    // Store selected flight data in session or local storage
-    sessionStorage.setItem('selectedFlights', JSON.stringify(selectedFlights)); 
+    nextStepButton.addEventListener('click', () => {
+        const selectedFlightIds = Array.from(document.querySelectorAll('.book-button.selected')).map(button => button.dataset.flightId);
 
-    // Redirect to booking page
-    window.location.href = '/booking';
-  });
+        // Ensure at least one flight is selected
+        if (selectedFlightIds.length === 0) {
+            alert("Please select at least one flight.");
+            return;
+        }
+        
+        // Count selected flights for round-trip validation
+        const selectedArrivalFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="arrival"]')).length;
+        const selectedReturnFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="return"]')).length;
+        const returnFlightsExist = document.querySelectorAll('.book-button[data-flight-type="return"]').length > 0;
+
+        // Check if round-trip is required but not both flights are selected
+        if (returnFlightsExist && (selectedArrivalFlights === 0 || selectedReturnFlights === 0)) {
+            alert("Please select both arrival and return flights for a round-trip.");
+            return;
+        }
+
+        const queryString = new URLSearchParams({
+            flightIds: selectedFlightIds.map(encodeURIComponent).join(',')}).toString();
+
+        window.location.href = '/booking?' + queryString;
+    });
+
+
+
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    
 </script>
 
 </body>

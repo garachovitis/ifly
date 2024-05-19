@@ -32,6 +32,7 @@
 		"express-flash": "^0.0.2",
 		"express-handlebars": "^7.0.7",
 		"express-session": "^1.17.3",
+		"method-override": "^3.0.0",
 		"nodemon": "^3.1.0",
 		"sqlite-async": "^1.2.0",
 		"sqlite3": "^5.1.7",

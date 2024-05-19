@@ -3,46 +3,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
-
-<div class="container mt-5">
-    <h2>Admin Dashboard</h2>
-    <form action="#" method="get">
-        <input type="text" name="from" placeholder="From (Departure)">
-        <input type="text" name="to" placeholder="To (Destination)">
-        <input type="date" name="departure_date" placeholder="Departure Date">
-        <input type="submit" value="Search">
-    </form>
-
-    <div class="button-group">
-        <a href="/newflight" class="btn btn-primary my-3">Add Flight</a> 
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Admin Dashboard</h1>
+        <div class="text-center">
+            <a href="/newflight" class="btn btn-primary mb-3 add-flight-btn">Add Flight</a>
+        </div>
+        <div class="d-flex flex-wrap justify-content-center">
+            {{#each flights}}
+                <div class="btn flight-btn m-2">
+                    {{this.airline}} - {{this.arrival}} to {{this.destination}} - {{this.date}} - ${{this.price}} - Seats: {{this.AvSeats}}
+                    <button class="btn btn-danger delete-btn" onclick="deleteFlight('{{this.flightID}}')">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            {{/each}}
+        </div>
     </div>
 
-    
-    <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action">
-            <h5 class="mb-1">Aegean Airlines | Athens to London</h5>
-            <p class="mb-1">Date: 5/4/2024 | 12:00 GMT  |   Price: $120</p>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-            <h5 class="mb-1">British Airlines | Athens to London</h5>
-            <p class="mb-1">Date: 5/4/2024  | 23:00 GMT | Price: $230</p>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-            <h5 class="mb-1">Ryanair | Athens to London</h5>
-            <p class="mb-1">Date: 5/4/2024 | 13:00 GMT | Price: $30</p>
-        </a>
-</div>
+    <script>
+        function deleteFlight(flightID) {
+            if (confirm('Are you sure you want to delete this flight?')) {
+                fetch(`/admin/${flightID}`, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Flight deleted successfully');
+                        window.location.reload();
+                    } else {
+                        alert('Failed to delete flight');
+                    }
+                })
+                .catch(error => alert('Error deleting flight: ' + error));
+            }
+        }
+    </script>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script>
-$(document).ready(function(){
-    $('.dropdown-toggle').dropdown();
-});
-</script>
-
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
