@@ -1,3 +1,4 @@
+{{!-- search.hbs --}}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,61 +71,64 @@
         </div>
     {{/if}}
 </div>
-
 <script>
-  const nextStepButton = document.getElementById('nextStepButton');
-  const bookButtons = document.querySelectorAll('.book-button'); 
+    const nextStepButton = document.getElementById('nextStepButton');
+    const bookButtons = document.querySelectorAll('.book-button');
 
-  // Initialize selectedFlightIds array (not an object)
-  const selectedFlightIds = []; 
+    // Initialize selectedFlightIds array (not an object)
+    const selectedFlightIds = [];
 
-  bookButtons.forEach(button => {
+    bookButtons.forEach(button => {
     button.addEventListener('click', () => {
-      const flightId = button.dataset.flightId;
-      
-      // Toggle selection state and update UI
-      if (button.classList.contains('selected')) {
+        const flightId = button.dataset.flightId;
+
+        // Toggle selection and update UI
+        if (button.classList.contains('selected')) {
         button.classList.remove('selected');
-        selectedFlightIds.splice(selectedFlightIds.indexOf(flightId), 1); 
-      } else {
+        selectedFlightIds.splice(selectedFlightIds.indexOf(flightId), 1); // Corrected index removal
+        } else {
         button.classList.add('selected');
         selectedFlightIds.push(flightId);
-      }
+        }
 
-      // Enable/disable the "Next Step" button
-      nextStepButton.disabled = selectedFlightIds.length === 0;
+        // Enable/disable the "Next Step" button based on selections
+        nextStepButton.disabled = selectedFlightIds.length === 0;
+
+        // Log selected flights for debugging
+        console.log("Selected Flight IDs:", selectedFlightIds);
     });
-  });
+    });
 
     nextStepButton.addEventListener('click', () => {
-        const selectedFlightIds = Array.from(document.querySelectorAll('.book-button.selected')).map(button => button.dataset.flightId);
+    // Ensure at least one flight is selected
+    if (selectedFlightIds.length === 0) {
+      alert("Please select at least one flight.");
+      return;
+    }
 
-        // Ensure at least one flight is selected
-        if (selectedFlightIds.length === 0) {
-            alert("Please select at least one flight.");
-            return;
-        }
+    // Count selected flights for round-trip validation
+    const selectedArrivalFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="arrival"]')).length;
+    const selectedReturnFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="return"]')).length;
+    const returnFlightsExist = document.querySelectorAll('.book-button[data-flight-type="return"]').length > 0;
+
+    // Check if round-trip is required but not both flights are selected
+    if (returnFlightsExist && (selectedArrivalFlights === 0 || selectedReturnFlights === 0)) {
+      alert("Please select both arrival and return flights for a round-trip.");
+      return;
+    }
+
         
-        // Count selected flights for round-trip validation
-        const selectedArrivalFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="arrival"]')).length;
-        const selectedReturnFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="return"]')).length;
-        const returnFlightsExist = document.querySelectorAll('.book-button[data-flight-type="return"]').length > 0;
+      const queryString = new URLSearchParams({
+      flightIds: selectedFlightIds.join(',') 
+    }).toString();
 
-        // Check if round-trip is required but not both flights are selected
-        if (returnFlightsExist && (selectedArrivalFlights === 0 || selectedReturnFlights === 0)) {
-            alert("Please select both arrival and return flights for a round-trip.");
-            return;
-        }
-
-        const queryString = new URLSearchParams({
-            flightIds: selectedFlightIds.map(encodeURIComponent).join(',')}).toString();
-
-        window.location.href = '/booking?' + queryString;
-    });
-
-
-
+    window.location.href = '/booking?' + queryString;
+  });
 </script>
+
+
+
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

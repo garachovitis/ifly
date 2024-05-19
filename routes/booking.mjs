@@ -1,3 +1,4 @@
+//booking.mjs route
 import express from 'express';
 const bookingRouter = express.Router();
 const bookingController = await import('../controller/ifly-controller.mjs');

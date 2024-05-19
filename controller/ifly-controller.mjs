@@ -164,6 +164,12 @@ export async function search(request, response) {
   try {
 
     const { from, to, departure_date, return_date} = request.query;
+    
+    if (!from || !to || from.trim() === '' || to.trim() === '') {
+      response.status(400).send("Error fetching flights: From and To fields are required.");
+      return;
+    }
+
     const _from = from.toUpperCase();
     const _to = to.toUpperCase();
 
@@ -189,7 +195,7 @@ export async function search(request, response) {
 }
 
 // ifly-controller.mjs
-export async function renderBookingPage(req, res) { // Add 'res' parameter here
+export async function renderBookingPage(req, res) {
   try {
     const userId = req.session.userId;
     if (!userId) {
@@ -197,25 +203,32 @@ export async function renderBookingPage(req, res) { // Add 'res' parameter here
       return;
     }
 
-    const flightIds = req.query.flightIds?.split(',').map(Number) || [];
+    const flightIdsString = req.query.flightIds; 
+    const flightIds = flightIdsString ? flightIdsString.split(',').map(Number) : [];
+    
+    console.log("Received flightIds:", flightIds);
+
+    //if there are no flights to display, you can redirect to the /search route
+    if (flightIds.length === 0) {
+      res.redirect('/search');
+      return;
+    }
 
     const flights = await model.getFlightsForBooking(flightIds);
 
-    // Calculate total price
     const total_price = flights.reduce((sum, flight) => sum + flight.price, 0);
 
-    res.render('booking', { 
-      flights, 
-      userId, 
-      _booking: true, 
+    res.render('booking', {
+      flights,
+      userId,
+      _booking: true,
       total_price,
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send("An error occurred while processing your booking."); 
+    res.status(500).send("An error occurred while processing your booking. Please try again.");
   }
 }
-
 
 export async function completeBooking(request, response) {
   try {

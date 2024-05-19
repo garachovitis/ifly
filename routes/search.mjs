@@ -1,3 +1,4 @@
+//search.mjs route
 import  express from 'express';
 
 const searchRouter = express.Router();
