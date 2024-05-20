@@ -19,9 +19,14 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarContent">
                         <ul class="navbar-nav ml-auto">
+                            {{#if _newflight}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin">Admin</a>
+                            </li>
+                            {{/if}}
                             {{#if _search}}
                             <li class="nav-item">
-                                <a class="nav-link" href="" >Home</a>
+                                <a class="nav-link" href="/index" >Home</a>
                             </li>
                             {{/if}}
                             {{#if _booking}}
@@ -68,6 +73,9 @@
                                     {{/if}}
                                    
                                     {{#if _booking}}
+                                    <a class="dropdown-item" href="/logout">Log Out</a>
+                                    {{/if}}
+                                    {{#if _newflight}}
                                     <a class="dropdown-item" href="/logout">Log Out</a>
                                     {{/if}}
                                     {{#else}}

@@ -2,6 +2,10 @@
     --primary-color: #007bff; /* Blue */
     --secondary-color: #cac4c4de; /* Gray */
 }
+.airline-logo {
+    max-width: 60px; /* Μέγιστο πλάτος */
+    height: auto;     /* Διατηρεί την αναλογία του ύψους */
+  }
 
 .btn-prim {
     background-color: #007bff;

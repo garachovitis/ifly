@@ -1,12 +1,13 @@
 //ifly-controller.mjs
 import { Flight as MyFlight } from '../model/flight.js'
+import url from 'url';
 
 
 
 const model = await import(`../model/better-sqlite/ifly-better.mjs`);
 //------------
 export async function renderNewFlightForm(request, response) {
-   response.render("newflight"); 
+   response.render("newflight",{renderNewFlightForm:renderNewFlightForm,model: process.env.MY_MODEL, _newflight: true}); 
  }
 
 //-----------
@@ -161,9 +162,13 @@ export async function signup(request, response) {
 
 
 export async function search(request, response) {
+
+
+
   try {
 
     const { from, to, departure_date, return_date} = request.query;
+
     
     if (!from || !to || from.trim() === '' || to.trim() === '') {
       response.status(400).send("Error fetching flights: From and To fields are required.");
@@ -183,6 +188,7 @@ export async function search(request, response) {
         go_flights_not_found : go_flights.length === 0,
         return_flights,
         return_flights_not_found : return_flights.length === 0 && return_date !== undefined && return_date !== '',
+        model: process.env.MY_MODEL, _search: true
       }
     )
   }
@@ -194,39 +200,25 @@ export async function search(request, response) {
   }
 }
 
-// ifly-controller.mjs
-export async function renderBookingPage(req, res) {
+
+
+export async function renderBookingPage(request, response) {
+  const urlParts = url.parse(request.url, true);
+  const query = urlParts.query; 
+  const arrivalFlightId = parseInt(query.arrivalFlightId);
+  const returnFlightId = parseInt(query.returnFlightId); 
+
+  const flightIds = [arrivalFlightId];
+  if (!isNaN(returnFlightId)) { 
+      flightIds.push(returnFlightId);
+  }
+
   try {
-    const userId = req.session.userId;
-    if (!userId) {
-      res.redirect("/login");
-      return;
-    }
-
-    const flightIdsString = req.query.flightIds; 
-    const flightIds = flightIdsString ? flightIdsString.split(',').map(Number) : [];
-    
-    console.log("Received flightIds:", flightIds);
-
-    //if there are no flights to display, you can redirect to the /search route
-    if (flightIds.length === 0) {
-      res.redirect('/search');
-      return;
-    }
-
-    const flights = await model.getFlightsForBooking(flightIds);
-
-    const total_price = flights.reduce((sum, flight) => sum + flight.price, 0);
-
-    res.render('booking', {
-      flights,
-      userId,
-      _booking: true,
-      total_price,
-    });
+      const flights = await model.getFlightsForBooking(flightIds);
+      response.render('booking', { flights });
   } catch (err) {
-    console.error(err);
-    res.status(500).send("An error occurred while processing your booking. Please try again.");
+      console.error("Error fetching flights for booking:", err);
+      response.status(500).send("An error occurred while fetching your flights.");
   }
 }
 

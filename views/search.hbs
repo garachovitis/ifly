@@ -1,17 +1,16 @@
-{{!-- search.hbs --}}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ifly</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="/css/search.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ifly</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="/css/search.css">
 </head>
 <body>
   <div class="container mt-5">
 
     <h2>Arrival</h2>
-        <button id="nextStepButton" class="btn btn-prim" disabled>Next Step</button>
+    <button id="nextStepButton" class="btn btn-prim" disabled>Next Step</button>
 
     {{#if go_flights_not_found}}
         <span class='text-danger'>Δεν βρέθηκαν πτήσεις αναχώρησης</span>
@@ -21,7 +20,7 @@
                 <div class="col-md-4 mb-3"> 
                     <div class="card h-100 flight-card">
                         <div class="card-body">
-                            <h5 class="card-title">{{this.airline}}</h5>
+                            <img src="/img/{{this.airline}}.png" alt="{{this.airline}}.png" class="airline-logo"> <p class="card-text"> 
                             <p class="card-text">
                                 <strong>From:</strong> {{this.arrival}}<br>
                                 <strong>To:</strong> {{this.destination}}<br>
@@ -50,7 +49,7 @@
                 <div class="col-md-4 mb-3">
                     <div class="card h-100 flight-card"> 
                         <div class="card-body">
-                            <h5 class="card-title">{{this.airline}}</h5>
+                            <img src="/img/{{this.airline}}.png" alt="{{this.airline}}.png" class="airline-logo"> <p class="card-text"> 
                             <p class="card-text">
                                 <strong>From:</strong> {{this.arrival}}<br>
                                 <strong>To:</strong> {{this.destination}}<br>
@@ -70,63 +69,83 @@
             {{/each}}
         </div>
     {{/if}}
-</div>
+  </div>
+ 
 <script>
-    const nextStepButton = document.getElementById('nextStepButton');
-    const bookButtons = document.querySelectorAll('.book-button');
+  const nextStepButton = document.getElementById('nextStepButton');
+  const bookButtons = document.querySelectorAll('.book-button');
+  const selectedFlightIds = []; 
 
-    // Initialize selectedFlightIds array (not an object)
-    const selectedFlightIds = [];
+  bookButtons.forEach(button => {
+      button.addEventListener('click', () => {
+          const flightId = parseInt(button.dataset.flightId, 10); 
+          const flightType = button.dataset.flightType; 
 
-    bookButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const flightId = button.dataset.flightId;
+          // Check if flightId is a valid number
+          if (!isNaN(flightId)) {
+              if (button.classList.contains('selected')) {
+                  button.classList.remove('selected');
+                  const index = selectedFlightIds.indexOf(flightId);
+                  if (index > -1) {
+                      selectedFlightIds.splice(index, 1);
+                  }
+              } else {
+                  button.classList.add('selected');
+                  selectedFlightIds.push(flightId);
+              }
+          } else {
+              console.error("Invalid flightId:", button.dataset.flightId);
+              alert("There was an error with this flight selection. Please try again."); // Display error message to user
+          }
 
-        // Toggle selection and update UI
-        if (button.classList.contains('selected')) {
-        button.classList.remove('selected');
-        selectedFlightIds.splice(selectedFlightIds.indexOf(flightId), 1); // Corrected index removal
-        } else {
-        button.classList.add('selected');
-        selectedFlightIds.push(flightId);
-        }
+          // Count selected flights for round-trip validation
+          const selectedArrivalFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="arrival"]')).length;
+          const selectedReturnFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="return"]')).length;
+          const returnFlightsExist = document.querySelectorAll('.book-button[data-flight-type="return"]').length > 0;
 
-        // Enable/disable the "Next Step" button based on selections
-        nextStepButton.disabled = selectedFlightIds.length === 0;
+          // Check if at least one flight is selected, and both if return exists
+          nextStepButton.disabled = !(selectedArrivalFlights > 0 && (!returnFlightsExist || selectedReturnFlights > 0));
+          
+          // Update button text if return flights exist but not selected
+          if (returnFlightsExist && selectedArrivalFlights > 0 && selectedReturnFlights === 0) {
+              nextStepButton.textContent = "Select a return flight";
+          } else {
+              nextStepButton.textContent = "Next Step"; 
+          }
+          // Log selected flights for debugging
+          console.log("Selected Flight IDs:", selectedFlightIds);
+      });
+  });
 
-        // Log selected flights for debugging
-        console.log("Selected Flight IDs:", selectedFlightIds);
-    });
-    });
+  nextStepButton.addEventListener('click', () => {
+      // Ensure at least one flight is selected
+      if (selectedFlightIds.length === 0) {
+          alert("Please select at least one flight.");
+          return;
+      }
 
-    nextStepButton.addEventListener('click', () => {
-    // Ensure at least one flight is selected
-    if (selectedFlightIds.length === 0) {
-      alert("Please select at least one flight.");
-      return;
-    }
+      // Count selected flights for round-trip validation
+      const selectedArrivalFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="arrival"]')).length;
+      const selectedReturnFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="return"]')).length;
+      const returnFlightsExist = document.querySelectorAll('.book-button[data-flight-type="return"]').length > 0;
 
-    // Count selected flights for round-trip validation
-    const selectedArrivalFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="arrival"]')).length;
-    const selectedReturnFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="return"]')).length;
-    const returnFlightsExist = document.querySelectorAll('.book-button[data-flight-type="return"]').length > 0;
+      // Check if round-trip is required but not both flights are selected
+      if (returnFlightsExist && (selectedArrivalFlights === 0 || selectedReturnFlights === 0)) {
+          alert("Please select both arrival and return flights for a round-trip.");
+          return;
+      }
+      
+      if (selectedFlightIds.length > 0) {
+          const queryString = new URLSearchParams({
+              flightIds: selectedFlightIds.join(',')
+          }).toString();
 
-    // Check if round-trip is required but not both flights are selected
-    if (returnFlightsExist && (selectedArrivalFlights === 0 || selectedReturnFlights === 0)) {
-      alert("Please select both arrival and return flights for a round-trip.");
-      return;
-    }
-
-        
-      const queryString = new URLSearchParams({
-      flightIds: selectedFlightIds.join(',') 
-    }).toString();
-
-    window.location.href = '/booking?' + queryString;
+          window.location.href = '/booking?' + queryString;
+      } else {
+          alert("Please select at least one flight.");
+      }
   });
 </script>
-
-
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
