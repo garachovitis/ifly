@@ -272,3 +272,22 @@ export async function removeFlight(req, res) {
       res.status(500).send("An error occurred while deleting the flight");
   }
 }
+
+
+export async function myFlights(request, response) {
+  try {
+    const userId = request.session.userId; // Get the logged-in user's ID
+
+    if (!userId) {
+      // Redirect to login if user is not logged in
+      response.redirect("/login");
+      return;
+    }
+
+    const flights = await model.getMyFlights(userId); // Fetch user's flights
+    response.render("myflights", { flights, _myflights: true }); // Render myflights.hbs
+  } catch (err) {
+    console.error("Error fetching my flights:", err);
+    response.status(500).send("An error occurred while fetching your flights.");
+  }
+}

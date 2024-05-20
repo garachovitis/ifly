@@ -1,0 +1,49 @@
+:root {
+    --primary-color: #007bff; /* Blue */
+    --secondary-color: #cac4c4de; /* Gray */
+}
+.airline-logo {
+    max-width: 60px; /* Μέγιστο πλάτος */
+    height: auto;     /* Διατηρεί την αναλογία του ύψους */
+  }
+
+.btn-prim {
+    background-color: #007bff;
+    color: white;
+
+    position: relative;
+    left: 90%;
+    bottom: 10px;
+    border-radius: 20px;
+
+}
+
+.flight-card {
+    border: 0.1px solid var(--secondary-color); 
+    box-shadow: 10px 10px 10px rgba(133, 130, 130, 0.1);
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out; /* Smooth transformation */
+
+
+}
+.flight-card:hover {
+    transform: scale(1.03); /* Slight scale on hover for interactive feel */
+}
+
+
+
+.flight-card .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    border-radius: 20px;
+    text-align: center;
+
+}
+
+/* Προσαρμογή για μικρότερες οθόνες */
+@media (max-width: 768px) {
+    .col-md-4 {
+        flex: 0 0 100%; /* Πλήρες πλάτος σε μικρές οθόνες */
+        max-width: 100%;
+    }
+}

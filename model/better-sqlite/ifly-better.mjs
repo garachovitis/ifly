@@ -190,3 +190,19 @@ export let removeFlight = (flightID) => {
         throw err; 
     }
 };
+
+
+export let getMyFlights = (userId) => {
+    const stmt = sql.prepare(`
+        SELECT * FROM flight
+        JOIN ticket ON flight.flightID = ticket.flight_id
+        WHERE ticket.user_id = ?
+    `);
+    let flights;
+    try {
+        flights = stmt.all(userId);
+        return flights;
+    } catch (err) {
+        throw err;
+    }
+}
