@@ -2,6 +2,7 @@
     --primary-color: #007bff; /* Blue */
     --secondary-color: #cac4c4de; /* Gray */
 }
+
 .airline-logo {
     max-width: 60px; /* Μέγιστο πλάτος */
     height: auto;     /* Διατηρεί την αναλογία του ύψους */
@@ -38,6 +39,13 @@
     border-radius: 20px;
     text-align: center;
 
+}
+.flight-date {
+    text-align: center;
+    display: block; /* Makes the span behave like a block element, filling the width of its container */
+    margin: 0, auto; /* This will center the block horizontally if needed, useful if you set a specific width */
+
+    font-size: 1.2rem; /* Optional: Increases the font size for better visibility */
 }
 
 /* Προσαρμογή για μικρότερες οθόνες */

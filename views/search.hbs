@@ -1,158 +1,117 @@
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ifly</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <link rel="stylesheet" href="/css/search.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ifly</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/search.css">
 </head>
 <body>
-  <div class="container mt-5">
+    <div class="container mt-5">
+        <h2>GO</h2>
+        <button id="nextStepButton" class="btn btn-primary" disabled>Next Step</button>
 
-    <h2>Arrival</h2>
-    <button id="nextStepButton" class="btn btn-prim" disabled>Next Step</button>
-
-    {{#if go_flights_not_found}}
-        <span class='text-danger'>Δεν βρέθηκαν πτήσεις αναχώρησης</span>
-    {{else}}
-        <div class="row">  
-            {{#each go_flights}}
-                <div class="col-md-4 mb-3"> 
-                    <div class="card h-100 flight-card">
-                        <div class="card-body">
-                            <img src="/img/{{this.airline}}.png" alt="{{this.airline}}.png" class="airline-logo"> <p class="card-text"> 
-                            <p class="card-text">
-                                <strong>From:</strong> {{this.arrival}}<br>
-                                <strong>To:</strong> {{this.destination}}<br>
-                                <strong>Date:</strong> {{this.date}}<br>
-                                <strong>Price</strong> {{this.price}}<strong>€</strong>
-                            </p>
-                            <button class="btn btn-primary book-button" 
-                                    data-flight-type="arrival"
-                                    data-flight-id="{{this.flightID}}"
-                                    data-arrival="{{this.arrival}}"
-                                    data-destination="{{this.destination}}"
-                                    data-date="{{this.date}}"
-                                    data-price="{{this.price}}">Book</button> 
+        {{#if goFlights_not_found}}
+            <span class='text-danger'>Δεν βρέθηκαν πτήσεις αναχώρησης</span>
+        {{else}}
+            <div class="row">
+                {{#each goFlights}}
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 flight-card">
+                            <div class="card-body">
+                                <img src="/img/{{this.airline}}.png" alt="{{this.airline}}" class="airline-logo">
+                                <p class="card-text">
+                                    <strong>From:</strong> {{this.arrival}}<br>
+                                    <strong>To:</strong> {{this.destination}}<br>
+                                    <strong>Date:</strong> {{this.date}}<br>
+                                    <strong>Price:</strong> {{this.price}}<strong>€</strong>
+                                </p>
+                                <button class="btn btn-primary book-button"
+                                        data-flight-type="departure"
+                                        data-flight-id="{{this.flightID}}"
+                                        data-arrival="{{this.arrival}}"
+                                        data-destination="{{this.destination}}"
+                                        data-date="{{this.date}}"
+                                        data-price="{{this.price}}">Book</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {{/each}}
-        </div>
-    {{/if}}
-
-    {{#if return_flights}}
-        <hr>
-        <h2>Return</h2>
-        <div class="row">
-            {{#each return_flights}}
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100 flight-card"> 
-                        <div class="card-body">
-                            <img src="/img/{{this.airline}}.png" alt="{{this.airline}}.png" class="airline-logo"> <p class="card-text"> 
-                            <p class="card-text">
-                                <strong>From:</strong> {{this.arrival}}<br>
-                                <strong>To:</strong> {{this.destination}}<br>
-                                <strong>Date:</strong> {{this.date}}<br>
-                                <strong>Price:</strong> {{this.price}} <strong>€</strong>
-                            </p>
-                            <button class="btn btn-primary book-button"
-                                    data-flight-type="return"
-                                    data-flight-id="{{this.flightID}}"
-                                    data-arrival="{{this.arrival}}"
-                                    data-destination="{{this.destination}}"
-                                    data-date="{{this.date}}"
-                                    data-price="{{this.price}}">Book</button>
+                {{/each}}
+            </div>
+        {{/if}}
+        
+        {{#if returnFlights}}
+            <hr>
+            <h2>RETURN</h2>
+            <div class="row">
+                {{#each returnFlights}}
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 flight-card">
+                            <div class="card-body">
+                                <img src="/img/{{this.airline}}.png" alt="{{this.airline}}" class="airline-logo">
+                                <p class="card-text">
+                                    <strong>From:</strong> {{this.arrival}}<br>
+                                    <strong>To:</strong> {{this.destination}}<br>
+                                    <strong>Date:</strong> {{this.date}}<br>
+                                    <strong>Price:</strong> {{this.price}} <strong>€</strong>
+                                </p>
+                                <button class="btn btn-primary book-button"
+                                        data-flight-type="return"
+                                        data-flight-id="{{this.flightID}}"
+                                        data-arrival="{{this.arrival}}"
+                                        data-destination="{{this.destination}}"
+                                        data-date="{{this.date}}"
+                                        data-price="{{this.price}}">Book</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {{/each}}
-        </div>
-    {{/if}}
-  </div>
- 
-<script>
-  const nextStepButton = document.getElementById('nextStepButton');
-  const bookButtons = document.querySelectorAll('.book-button');
-  const selectedFlightIds = []; 
+                {{/each}}
+            </div>
+        {{/if}}
+    </div>
 
-  bookButtons.forEach(button => {
-      button.addEventListener('click', () => {
-          const flightId = parseInt(button.dataset.flightId, 10); 
-          const flightType = button.dataset.flightType; 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        let arrivalFlightBooked = Cookies.get('bookedArrivalFlightID') ? true : false;
+        let returnFlightBooked = Cookies.get('bookedReturnFlightID') ? true : false;
 
-          // Check if flightId is a valid number
-          if (!isNaN(flightId)) {
-              if (button.classList.contains('selected')) {
-                  button.classList.remove('selected');
-                  const index = selectedFlightIds.indexOf(flightId);
-                  if (index > -1) {
-                      selectedFlightIds.splice(index, 1);
-                  }
-              } else {
-                  button.classList.add('selected');
-                  selectedFlightIds.push(flightId);
-              }
-          } else {
-              console.error("Invalid flightId:", button.dataset.flightId);
-              alert("There was an error with this flight selection. Please try again."); // Display error message to user
-          }
+        // Disable buttons for previously booked flights
+        if (arrivalFlightBooked) {
+            $(`button[data-flight-id="${Cookies.get('bookedArrivalFlightID')}"]`).prop('disabled', true).text('Booked');
+        }
+        if (returnFlightBooked) {
+            $(`button[data-flight-id="${Cookies.get('bookedReturnFlightID')}"]`).prop('disabled', true).text('Booked');
+        }
 
-          // Count selected flights for round-trip validation
-          const selectedArrivalFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="arrival"]')).length;
-          const selectedReturnFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="return"]')).length;
-          const returnFlightsExist = document.querySelectorAll('.book-button[data-flight-type="return"]').length > 0;
+        $('.book-button').click(function() {
+            const flightType = $(this).data('flight-type');
+            const flightID = $(this).data('flight-id');
 
-          // Check if at least one flight is selected, and both if return exists
-          nextStepButton.disabled = !(selectedArrivalFlights > 0 && (!returnFlightsExist || selectedReturnFlights > 0));
-          
-          // Update button text if return flights exist but not selected
-          if (returnFlightsExist && selectedArrivalFlights > 0 && selectedReturnFlights === 0) {
-              nextStepButton.textContent = "Select a return flight";
-          } else {
-              nextStepButton.textContent = "Next Step"; 
-          }
-          // Log selected flights for debugging
-          console.log("Selected Flight IDs:", selectedFlightIds);
-      });
-  });
+            Cookies.set(flightType === 'departure' ? 'bookedArrivalFlightID' : 'bookedReturnFlightID', flightID);
 
-  nextStepButton.addEventListener('click', () => {
-      // Ensure at least one flight is selected
-      if (selectedFlightIds.length === 0) {
-          alert("Please select at least one flight.");
-          return;
-      }
+            $(this).prop('disabled', true).text('Booked');
+            if (flightType === 'departure') {
+                arrivalFlightBooked = true;
+            } else {
+                returnFlightBooked = true;
+            }
 
-      // Count selected flights for round-trip validation
-      const selectedArrivalFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="arrival"]')).length;
-      const selectedReturnFlights = Array.from(document.querySelectorAll('.book-button.selected[data-flight-type="return"]')).length;
-      const returnFlightsExist = document.querySelectorAll('.book-button[data-flight-type="return"]').length > 0;
+            if ((arrivalFlightBooked && (!returnFlightBooked || $('.book-button[data-flight-type="return"]:disabled').length > 0)) || (returnFlightBooked && $('.book-button[data-flight-type="departure"]:disabled').length > 0)) {
+                $('#nextStepButton').prop('disabled', false);
+            }
+        });
 
-      // Check if round-trip is required but not both flights are selected
-      if (returnFlightsExist && (selectedArrivalFlights === 0 || selectedReturnFlights === 0)) {
-          alert("Please select both arrival and return flights for a round-trip.");
-          return;
-      }
-      
-      if (selectedFlightIds.length > 0) {
-          const queryString = new URLSearchParams({
-              flightIds: selectedFlightIds.join(',')
-          }).toString();
-
-          window.location.href = '/booking?' + queryString;
-      } else {
-          alert("Please select at least one flight.");
-      }
-  });
-</script>
-
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script>
-    
-</script>
-
+        $('#nextStepButton').click(function() {
+            if (arrivalFlightBooked && (returnFlightBooked || $('.book-button[data-flight-type="return"]').length === 0)) {
+                window.location.href = '/booking';
+            } else {
+                alert('Please book both arrival and return flights to proceed.');
+            }
+        });
+    });
+    </script>
 </body>

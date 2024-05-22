@@ -1,29 +1,43 @@
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #cac4c4de;
+}
+.airline-logo {
+    max-width: 80px;
+    height: auto;
 }
 
-.card {
-    border-radius: 15px; /* iOS-like rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+.btn-prim {
+    background-color: #007bff;
+    color: white;
+    position: relative;
+    left: 90%;
+    bottom: 10px;
+    border-radius: 20px;
 }
 
-.card-header {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-}
-
-.form-control {
+.flight-card {
+    border: 0.1px solid var(--secondary-color);
+    box-shadow: 10px 10px 10px rgba(133, 130, 130, 0.1);
     border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
 }
 
-.btn-primary {
-    background-color: #007bff; /* Primary blue */
-    border-color: #007bff;
-    border-radius: 10px;
+.flight-card:hover {
+    transform: scale(1.03);
 }
 
-#flightDetails .flight-details-section {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+.flight-card .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    border-radius: 20px;
+    text-align: center;
+    
+}
+
+@media (max-width: 768px) {
+    .col-md-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 }

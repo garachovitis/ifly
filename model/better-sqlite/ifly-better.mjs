@@ -119,7 +119,7 @@ export let addFlight = (flightData) => {
 export const search = (arrival, destination, date) => {
     try {
         const stmt = sql.prepare(`
-            SELECT arrival, destination, price, date, airline FROM flight
+            SELECT * FROM flight
             WHERE arrival = ? AND destination = ? AND date = ?
         `);
 
@@ -131,37 +131,19 @@ export const search = (arrival, destination, date) => {
         throw new Error(err);
     }
 }
-export const getFlightsForBooking = (flightIds) => {
-    if (!Array.isArray(flightIds) || flightIds.length === 0) {
-        return []; 
-    }
 
-    const placeholders = flightIds.map(() => '?').join(','); 
+export const getFlightByID = (flightID) => {
     try {
         const stmt = sql.prepare(`
-            SELECT * FROM flight WHERE flightID IN (${placeholders})
+            SELECT * FROM flight
+            WHERE flightID = ?
         `);
-        const result = stmt.all(flightIds); // Use the flightIds array directly
+
+        const result = stmt.get(flightID);
         return result;
     }   
-    catch(err) {
-        throw new Error("Error fetching flights for booking: " + err);
-    }
-}
-
-export let bookTicket = (flightId, userId) => {
-    try {
-        const stmt = sql.prepare(`
-            INSERT INTO ticket (flight_id, user_id) VALUES (?, ?)
-        `);
-
-        const result = stmt.run(flightId, userId);
-        console.log(`Ticket booked with ID: ${result.lastInsertRowid}`);
-
-        return true;
-    }
-    catch(err) {
-        throw new Error(err); 
+    catch (err) {
+        throw new Error(err);
     }
 }
 
@@ -175,7 +157,7 @@ export async function getFlights() {
         const result = stmt.all(); 
         return result;
     } catch (err) {
-        throw new Error("Error fetching flights: " + err);
+        throw new Error("Error fetching flights:better " + err);
     }
 }
 export let removeFlight = (flightID) => {
@@ -206,3 +188,16 @@ export let getMyFlights = (userId) => {
         throw err;
     }
 }
+
+export const bookFlight = (userID, flightID) => {
+    try {
+        const stmt = sql.prepare(`
+            INSERT INTO ticket (user_id, flight_id)
+            VALUES (?, ?)
+        `);
+        stmt.run(userID, flightID);
+    } catch (err) {
+        console.error("Error booking flight:", err);
+        throw new Error(err);
+    }
+};

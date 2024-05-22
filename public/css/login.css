@@ -15,8 +15,8 @@
 }
 
 #login-form button {
-    border-radius: 20px; /* Rounded corners for the button */
-    background-color: #0069d9; /*  primary blue */
+    border-radius: 20px; 
+    background-color: #0069d9; 
     color: white;
     padding: 10px;
     border: none;
@@ -25,5 +25,5 @@
 }
 
 #login-form button:hover {
-    background-color: #0056b3; /* Darker blue when hovering */
+    background-color: #0056b3; 
 }

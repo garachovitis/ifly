@@ -1,10 +1,11 @@
 //ifly-controller.mjs
 import { Flight as MyFlight } from '../model/flight.js'
-import url from 'url';
-
+// import url from 'url';
 
 
 const model = await import(`../model/better-sqlite/ifly-better.mjs`);
+
+
 //------------
 export async function renderNewFlightForm(request, response) {
    response.render("newflight",{renderNewFlightForm:renderNewFlightForm,model: process.env.MY_MODEL, _newflight: true}); 
@@ -161,93 +162,43 @@ export async function signup(request, response) {
 
 
 
+
 export async function search(request, response) {
-
-
-
   try {
+      const { from, to, departure_date, return_date } = request.query;
 
-    const { from, to, departure_date, return_date} = request.query;
-
-    
-    if (!from || !to || from.trim() === '' || to.trim() === '') {
-      response.status(400).send("Error fetching flights: From and To fields are required.");
-      return;
-    }
-
-    const _from = from.toUpperCase();
-    const _to = to.toUpperCase();
-
-    const go_flights = await model.search(_from, _to, departure_date,);
-    const return_flights = await model.search(_to, _from, return_date);
-
-    response.render(
-      'search',
-      {
-        go_flights,
-        go_flights_not_found : go_flights.length === 0,
-        return_flights,
-        return_flights_not_found : return_flights.length === 0 && return_date !== undefined && return_date !== '',
-        model: process.env.MY_MODEL, _search: true
+      if (!from || !to || from.trim() === '' || to.trim() === '') {
+          response.status(400).send("Error fetching flights: From and To fields are required.");
+          return;
       }
-    )
-  }
-  catch (err) {
-   console.error("Error fetching flights: search contr", err);
-    response.status(500).send("Error fetching flights: search-control -500 " + err.message);
- 
-    return;
-  }
-}
 
+      const _from = from.toUpperCase();
+      const _to = to.toUpperCase();
 
+      const goFlights = await model.search(_from, _to, departure_date);
+      const returnFlights = return_date ? await model.search(_to, _from, return_date) : []; // Get return flights if a date is provided
 
-export async function renderBookingPage(request, response) {
-  const urlParts = url.parse(request.url, true);
-  const query = urlParts.query; 
-  const arrivalFlightId = parseInt(query.arrivalFlightId);
-  const returnFlightId = parseInt(query.returnFlightId); 
+      // Use cookies for booked flight IDs
+      const bookedArrivalFlightID = request.cookies.bookedArrivalFlightID || null;
+      const bookedReturnFlightID = request.cookies.bookedReturnFlightID || null;
 
-  const flightIds = [arrivalFlightId];
-  if (!isNaN(returnFlightId)) { 
-      flightIds.push(returnFlightId);
-  }
-
-  try {
-      const flights = await model.getFlightsForBooking(flightIds);
-      response.render('booking', { flights });
+      response.render('search', {
+          goFlights,
+          goFlights_not_found: goFlights.length === 0,
+          returnFlights,
+          returnFlights_not_found: returnFlights.length === 0 && return_date !== undefined && return_date !== '',
+          model: process.env.MY_MODEL,
+          _search: true,
+          booked_arrival_flight_id: bookedArrivalFlightID,
+          booked_return_flight_id: bookedReturnFlightID
+      });
   } catch (err) {
-      console.error("Error fetching flights for booking:", err);
-      response.status(500).send("An error occurred while fetching your flights.");
+      console.error("Error fetching flights:", err);
+      response.status(500).send("Error fetching flights: " + err.message);
   }
 }
 
-export async function completeBooking(request, response) {
-  try {
-    const { userId, flightIds } = request.body;
-    // Loop through flightIds and book tickets
-    for (const flightId of flightIds) {
-      await model.bookTicket(flightId, userId); 
-    }
 
-    response.status(200).send("Booking completed successfully");
-  } catch (error) {
-    console.error("Error completing booking:", error);
-    response.status(500).send("Error completing booking");
-  }
-}
-// ifly-controller.mjs
-
-export async function getFlightsForBooking(request, response) {
-  try {
-    const { flightIds } = request.body;
-    const flights = await model.getFlightsForBooking(flightIds); 
-    response.json(flights);
-  } catch (err) {
-    console.error(err);
-    response.status(500).json({ error: 'Failed to fetch flight data' });
-  }
-}
 
 export async function removeFlight(req, res) {
   try {
@@ -279,7 +230,6 @@ export async function myFlights(request, response) {
     const userId = request.session.userId; // Get the logged-in user's ID
 
     if (!userId) {
-      // Redirect to login if user is not logged in
       response.redirect("/login");
       return;
     }
@@ -289,5 +239,59 @@ export async function myFlights(request, response) {
   } catch (err) {
     console.error("Error fetching my flights:", err);
     response.status(500).send("An error occurred while fetching your flights.");
+  }
+}
+
+export async function booking(request, response) {
+  try {
+      const bookedArrivalFlightID = request.cookies.bookedArrivalFlightID;
+      const bookedReturnFlightID = request.cookies.bookedReturnFlightID;
+
+      if (!bookedArrivalFlightID || !bookedReturnFlightID) {
+          response.status(400).send("Both arrival and return flights must be booked.");
+          return;
+      }
+
+      const arrivalFlight = await model.getFlightByID(bookedArrivalFlightID);
+      const returnFlight = await model.getFlightByID(bookedReturnFlightID);
+
+      response.render('booking', {
+          arrivalFlight,
+          returnFlight
+      });
+  } catch (err) {
+      console.error("Error fetching booking summary:", err);
+      response.status(500).send("Error fetching booking summary: " + err.message);
+  }
+}
+
+
+export async function completeBooking(request, response) {
+  try {
+      const bookedArrivalFlightID = request.cookies.bookedArrivalFlightID;
+      const bookedReturnFlightID = request.cookies.bookedReturnFlightID;
+      const userID = request.session.userID; // Assuming the user ID is stored in session
+
+      //ελεγχοσ
+      console.log("bookedArrivalFlightID:", bookedArrivalFlightID);
+      console.log("bookedReturnFlightID:", bookedReturnFlightID);
+      console.log("userID:", userID);
+
+      if (!bookedArrivalFlightID || !bookedReturnFlightID || !userID) {
+          response.status(400).send("Both arrival and return flights must be booked, and user must be logged in.");
+          return;
+      }
+
+      await model.bookFlight(userID, bookedArrivalFlightID);
+      await model.bookFlight(userID, bookedReturnFlightID);
+
+      // Clear the booking cookies
+      response.clearCookie('bookedArrivalFlightID');
+      response.clearCookie('bookedReturnFlightID');
+
+      response.status(200).send("Booking Completed Have a nice trip✈️");
+  } catch (err) {
+      console.error("Error completing booking:", err);
+      response.status(500).send("Error completing booking: " + err.message);
   }
 }

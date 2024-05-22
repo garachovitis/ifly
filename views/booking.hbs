@@ -1,79 +1,71 @@
-
-{{!-- booking.hbs  --}}
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iFly - Booking</title>
-  <style>
-    .flight-summary {
-      border: 1px solid #ccc;
-      padding: 15px;
-      margin-bottom: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Summary</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/booking.css">
 </head>
-
 <body>
-  <div class="container">
-    <h1>Booking Summary</h1>
+    <div class="container mt-5">
+        <h2>Booking Summary</h2>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 flight-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Arrival Flight</h5>
+                        <img src="/img/{{arrivalFlight.airline}}.png" alt="{{arrivalFlight.airline}}" class="airline-logo">
+                        <p class="card-text">
+                            <strong>From:</strong> {{arrivalFlight.arrival}}<br>
+                            <strong>To:</strong> {{arrivalFlight.destination}}<br>
+                            <strong>Date:</strong> {{arrivalFlight.date}}<br>
+                            <strong>Price:</strong> {{arrivalFlight.price}}<strong>€</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 flight-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Return Flight</h5>
+                        <img src="/img/{{returnFlight.airline}}.png" alt="{{returnFlight.airline}}" class="airline-logo">
+                        <p class="card-text">
+                            <strong>From:</strong> {{returnFlight.arrival}}<br>
+                            <strong>To:</strong> {{returnFlight.destination}}<br>
+                            <strong>Date:</strong> {{returnFlight.date}}<br>
+                            <strong>Price:</strong> {{returnFlight.price}}<strong>€</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button id="completeBookingButton" class="btn btn-success">Complete Booking</button>
+    </div>
 
-    {{#if flights.length}}
-      <div id="bookingSummary" class="flight-summary">
-        <h2>Selected Flights:</h2>
-        <ul>
-          {{#each flights}}
-            <li>
-              {{this.airline}} - {{this.arrival}} to {{this.destination}} on {{this.date}} ({{this.price}}€)
-            </li>
-          {{/each}}
-        </ul>
-        <p><strong>Total Price:</strong> <span id="totalPrice">{{total_price}}</span>€</p> 
-      </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
 
-      <button id="completeBooking">Complete Booking</button>
-    {{else}}
-      <p>No flights selected for booking.</p>
-    {{/if}}
-  </div>
-
-<script>
-  const completeBookingButton = document.getElementById('completeBooking');
-  const totalPriceElement = document.getElementById('totalPrice');
-
-    // Calculate total price on page load
-    const flights = JSON.parse(sessionStorage.getItem('selectedFlights'));
-    let totalPrice = 0;
-    if (flights) {
-      Object.values(flights).forEach(flight => {
-        totalPrice += parseFloat(flight.price);
-      });
-      totalPriceElement.textContent = totalPrice.toFixed(2); 
-    }
-
-      if (completeBookingButton) { 
-    completeBookingButton.addEventListener('click', () => {
-      const userId = '{{user}}'; 
-      const flightIds = {{#each flights}}{{this.flightID}},{{/each}}; 
-
-      fetch('/booking/completeBooking', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userId, flightIds })
-      })
-      .then(response => {
-        if (response.ok) {
-          alert('Booking completed successfully!');
-          window.location.href = '/index'; 
-        } else {
-          alert('An error occurred during booking.');
-        }
-      });
-    });
-  }
-</script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            console.log("Document is ready");
+            $('#completeBookingButton').click(function() {
+                console.log("Complete Booking button clicked");
+                $.ajax({
+                    url: '/complete-booking',
+                    method: 'POST',
+                    success: function(response) {
+                        console.log("AJAX success:", response);
+                        alert(response);
+                        window.location.href = '/myflights';
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                        alert('Error completing booking. Please try again.');
+                    }
+                });
+            });
+        });
+        </script>
 </body>

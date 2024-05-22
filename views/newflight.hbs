@@ -42,7 +42,7 @@
         event.preventDefault();
 
         let isValid = true;
-        const warnings = {}; // Use an object for more dynamic error handling
+        const warnings = {}; // Store error messages
 
         const airline = document.getElementById('airline').value.toUpperCase(); 
         const arrival = document.getElementById('arrival').value.toUpperCase(); // Convert to uppercase for consistency
@@ -85,7 +85,6 @@
             isValid = false;
         }
 
-        // Displaying Errors (More User-Friendly)
         const errorContainer = document.createElement('div');
         errorContainer.classList.add('alert', 'alert-danger', 'mt-3');
 

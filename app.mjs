@@ -57,7 +57,7 @@ app.use("/", signupRouter);
 app.use("/", iflyRouter);
 app.use("/", flightRouter);
 app.use("/", indexRouter);
-app.use("/", searchRouter);
+ app.use("/", searchRouter);
 app.use("/", bookingRouter);
 app.use("/", myflightsRouter);
 
