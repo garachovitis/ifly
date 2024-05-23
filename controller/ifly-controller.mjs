@@ -126,9 +126,8 @@ export async function login(request, response) {
       response.render("login", {_login: true, _wrong_password: true});
    }
    else if (userFound === false) {
-      response.redirect("/signup");
-   }
-   //admin check--------
+    response.render("login", {_login: true, _wrong_password: true});
+  }
    else {
       request.session.userId = username;
   
