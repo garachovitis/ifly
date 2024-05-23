@@ -198,3 +198,7 @@ export async function bookFlight(userId, flightID) {
       throw new Error("Failed to book flight. Please try again."); 
     }
   }
+
+  export async function support(){
+    
+  }

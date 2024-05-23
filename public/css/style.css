@@ -17,6 +17,8 @@
 .navbar-dark .navbar-nav .nav-link {
     color: white;
     transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover,
@@ -38,9 +40,10 @@
     }
 }
 
+
 span[data-task-id] {
-	cursor: pointer;
-	text-decoration: none;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 span[data-task-id].task-status-inactive {

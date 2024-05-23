@@ -28,6 +28,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/index" >Home</a>
                             </li>
+                            
                             {{/if}}
                             {{#if _booking}}
                             <li class="nav-item">
@@ -35,11 +36,14 @@
                             </li>
                             {{/if}}
                             {{#if _admin}}
+                            <li class="nav-item">
                             <a class="nav-link" href="/newflight">Add Flight</a>
+                            </li>
                             {{/if}}
                             {{#if _index}}
                             <li class="nav-item">
                                 <a class="nav-link" href="/myflights">My flights</a>
+                            </li>
                             {{/if}}
                             {{#if _search}}
                             <li class="nav-item">
@@ -48,13 +52,23 @@
                             {{#if _booking}}
                             <li class="nav-item">
                                 <a class="nav-link" href="/myflights">My flights</a>
+                            </li>
                             {{/if}}
                             {{#if _myflights}}
                             <li class="nav-item">
                                 <a class="nav-link" href="/index">Home</a>
-                            {{/if}}
-
                             </li>
+                            {{/if}}
+                            {{#if _support}}
+                             <li class="nav-item">
+                                <a class="nav-link" href="/index">Home</a>
+                            </li>
+
+                            {{/if}}
+                            <li class="nav-item">
+                                <a class = "nav-link" href="/support">Contact</a>
+                            </li>
+                            
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img src="/img/login.png" alt="Profile Image" class="profile-img">
@@ -133,6 +147,7 @@
 
         </script>
     </head>
+
     <body>
         <div class="container">
                    
@@ -141,6 +156,7 @@
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
     </body>
 
 </html>

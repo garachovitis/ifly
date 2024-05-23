@@ -1,4 +1,5 @@
 //ifly-controller.mjs
+import { support } from '../model/better-sqlite/ifly-better.mjs';
 import { Flight as MyFlight } from '../model/flight.js'
 // import url from 'url';
 
@@ -321,4 +322,8 @@ export async function completeBooking(request, response) {
     response.redirect("/login");
     return;
   }
+}
+
+export async function supportrender(request, response) {
+  response.render("support",{_support:true}); 
 }

@@ -10,6 +10,7 @@ import indexRouter from './routes/index.mjs';
 import searchRouter from './routes/search.mjs';
 import bookingRouter from './routes/booking.mjs';
 import myflightsRouter from './routes/myflights.mjs';
+import supportRouter from './routes/support.mjs';
 
 import bodyParser from 'body-parser';
 
@@ -63,5 +64,6 @@ app.use("/", indexRouter);
  app.use("/", searchRouter);
 app.use("/", bookingRouter);
 app.use("/", myflightsRouter);
+app.use('/',supportRouter)
 
 export { app as ifly };
