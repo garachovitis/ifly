@@ -9,8 +9,9 @@
 <body>
     <div class="container mt-5">
         <h2>GO</h2>
-        <button id="nextStepButton" class="btn btn-primary" disabled>Next Step</button>
-
+        <div class="next-step-container">
+            <button id="nextStepButton" class="btn btn-primary" disabled>Next Step</button>
+        </div>
         {{#if goFlights_not_found}}
             <span class='text-danger'>Δεν βρέθηκαν πτήσεις αναχώρησης</span>
         {{else}}

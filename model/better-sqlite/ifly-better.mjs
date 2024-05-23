@@ -189,15 +189,12 @@ export let getMyFlights = (userId) => {
     }
 }
 
-export const bookFlight = (userID, flightID) => {
+export async function bookFlight(userId, flightID) {
     try {
-        const stmt = sql.prepare(`
-            INSERT INTO ticket (user_id, flight_id)
-            VALUES (?, ?)
-        `);
-        stmt.run(userID, flightID);
+      const stmt = sql.prepare(`INSERT INTO ticket (user_id, flight_id) VALUES (?, ?)`);
+      stmt.run(userId, flightID);
     } catch (err) {
-        console.error("Error booking flight:", err);
-        throw new Error(err);
+      console.error("Error booking flight:", err);
+      throw new Error("Failed to book flight. Please try again."); 
     }
-};
+  }

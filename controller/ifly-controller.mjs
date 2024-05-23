@@ -160,10 +160,15 @@ export async function signup(request, response) {
 
 
 
-
-
-
 export async function search(request, response) {
+  try {
+    const userId = request.session.userId;
+ }
+ catch (err) {
+    console.log(err);
+    response.redirect("/login");
+    return;
+ }
   try {
       const { from, to, departure_date, return_date } = request.query;
 
@@ -244,6 +249,20 @@ export async function myFlights(request, response) {
 
 export async function booking(request, response) {
   try {
+    const userId = request.session.userId;
+ }
+ catch (err) {
+    console.log(err);
+    response.redirect("/login");
+    return;
+ }
+ const userId = request.session.userId;
+ if (userId === undefined || userId === null) {
+    response.redirect("/login");
+    return;      
+ }
+
+  try {
       const bookedArrivalFlightID = request.cookies.bookedArrivalFlightID;
       const bookedReturnFlightID = request.cookies.bookedReturnFlightID;
 
@@ -257,7 +276,9 @@ export async function booking(request, response) {
 
       response.render('booking', {
           arrivalFlight,
-          returnFlight
+          returnFlight,
+          model: process.env.MY_MODEL,
+          _booking: true
       });
   } catch (err) {
       console.error("Error fetching booking summary:", err);
@@ -265,33 +286,39 @@ export async function booking(request, response) {
   }
 }
 
-
 export async function completeBooking(request, response) {
   try {
-      const bookedArrivalFlightID = request.cookies.bookedArrivalFlightID;
-      const bookedReturnFlightID = request.cookies.bookedReturnFlightID;
-      const userID = request.session.userID; // Assuming the user ID is stored in session
+    const userId = request.session.userId;
 
-      //ελεγχοσ
-      console.log("bookedArrivalFlightID:", bookedArrivalFlightID);
-      console.log("bookedReturnFlightID:", bookedReturnFlightID);
-      console.log("userID:", userID);
+    if (!userId) {
+      response.redirect("/login");
+      return;
+    }
 
-      if (!bookedArrivalFlightID || !bookedReturnFlightID || !userID) {
-          response.status(400).send("Both arrival and return flights must be booked, and user must be logged in.");
-          return;
-      }
+    const { flights } = request.body;
 
-      await model.bookFlight(userID, bookedArrivalFlightID);
-      await model.bookFlight(userID, bookedReturnFlightID);
+    console.log("flights:", flights);
+    console.log("userId:", userId);
 
-      // Clear the booking cookies
-      response.clearCookie('bookedArrivalFlightID');
-      response.clearCookie('bookedReturnFlightID');
+    if (!flights || flights.length === 0) {
+      response.status(400).json({ success: false, message: "At least one flight must be booked, and user must be logged in." });
+      return;
+    }
 
-      response.status(200).send("Booking Completed Have a nice trip✈️");
-  } catch (err) {
+    try {
+      flights.forEach(async (flight) => {
+        await model.bookFlight(userId, flight.flightID);
+      });
+
+      console.log("Booking Completed. Have a nice trip✈️");
+      response.status(201).json({ success: true, message: "Booking Completed. Have a nice trip✈️" });
+    } catch (err) {
       console.error("Error completing booking:", err);
-      response.status(500).send("Error completing booking: " + err.message);
+      response.status(500).json({ success: false, message: "Error completing booking: " + err.message });
+    }
+  } catch (err) {
+    console.log(err);
+    response.redirect("/login");
+    return;
   }
 }

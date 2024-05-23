@@ -15,20 +15,23 @@ import bodyParser from 'body-parser';
 
 import path from 'path';
 
+import cookieParser from 'cookie-parser';
+
 const app = express();
 
 import dotenv from 'dotenv';
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config();
 }
-
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static('public'));
 app.use(session({
     secret: '1A2B3c4d5E6f7g9H0$',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { secure: false }
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

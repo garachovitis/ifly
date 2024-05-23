@@ -1,39 +1,19 @@
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
+body {
+    background-color: #f8f9fa;
 }
 
-.rounded-search-form {
-    max-width: 500px;
-    border: 1px solid #ddd;
-    padding: 20px; 
-    border-radius: 15px;
+.card {
+    max-width: 400px;
+    margin: auto;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.input-group-text {
-    max-width: 500px;
-
-    background-color: #f8f9fa; 
-    border: none;
+.btn-block {
+    background-color: #007bff;
+    border-color: #007bff;
 }
 
-.form-control {
-    border-radius: 0.25rem;
-}
-
-.swap-button {
-    width: 50px; 
-    height: 50px; 
-}
-
-.btn-primary {
-    width: 100%;
-    border-radius: 20px;
-}
-
-@media (max-width: 576px) {
-    .rounded-search-form {
-        margin: 0 15px;
-    }
+.btn-block:hover {
+    background-color: #0056b3;
+    border-color: #004085;
 }

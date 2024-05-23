@@ -39,33 +39,84 @@
                 </div>
             </div>
         </div>
-        <button id="completeBookingButton" class="btn btn-success">Complete Booking</button>
+        <button type="button" id="completeBookingBtn" class="btn btn-success">Complete Booking</button>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <!-- Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingModalLabel">Booking Completed</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Booking completed successfully! Have a nice trip.</p>
+                    <img src="/img/nice.png" alt="Have a nice trip" class="img-fluid">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="okBtn" class="btn btn-primary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
-
     <script>
-        $(document).ready(function() {
-            console.log("Document is ready");
-            $('#completeBookingButton').click(function() {
-                console.log("Complete Booking button clicked");
-                $.ajax({
-                    url: '/complete-booking',
-                    method: 'POST',
-                    success: function(response) {
-                        console.log("AJAX success:", response);
-                        alert(response);
-                        window.location.href = '/myflights';
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX error:", status, error);
-                        alert('Error completing booking. Please try again.');
-                    }
+    document.getElementById('completeBookingBtn').addEventListener('click', function() {
+        const arrivalFlight = {
+            airline: "{{arrivalFlight.airline}}",
+            arrival: "{{arrivalFlight.arrival}}",
+            destination: "{{arrivalFlight.destination}}",
+            date: "{{arrivalFlight.date}}",
+            price: "{{arrivalFlight.price}}",
+            flightID: "{{arrivalFlight.flightID}}"
+        };
+
+        const returnFlight = {
+            airline: "{{returnFlight.airline}}",
+            arrival: "{{returnFlight.arrival}}",
+            destination: "{{returnFlight.destination}}",
+            date: "{{returnFlight.date}}",
+            price: "{{returnFlight.price}}",
+            flightID: "{{returnFlight.flightID}}"
+        };
+
+        const flights = [arrivalFlight];
+        if (returnFlight.flightID) {
+            flights.push(returnFlight);
+        }
+
+        console.log("Sending booking data:", { flights: flights });
+
+        fetch('/complete-booking', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ flights: flights })
+        })
+        .then(response => {
+            console.log("Received response:", response);
+            return response.json();
+        })
+        .then(data => {
+            console.log("Received data:", data);
+            if (data.success) {
+                $('#bookingModal').modal('show');
+                document.getElementById('okBtn').addEventListener('click', function() {
+                    window.location.href = '/myflights';
                 });
-            });
-        });
-        </script>
+            } else {
+                alert('Booking failed. Please try again.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
 </body>
