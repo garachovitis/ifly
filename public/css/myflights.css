@@ -1,50 +1,61 @@
-:root {
-    --primary-color: #007bff;
-    --secondary-color: #cac4c4de;
+body {
+    background-color: #f5f5f5;
 }
 
-.airline-logo {
-    max-width: 60px;
-    height: auto;
+.container {
+    margin-top: 20px;
 }
 
-.btn-prim {
-    background-color: #007bff;
-    color: white;
-    position: relative;
-    left: 90%;
-    bottom: 10px;
-    border-radius: 20px;
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 .flight-card {
-    border: 0.1px solid var(--secondary-color);
-    box-shadow: 10px 10px 10px rgba(133, 130, 130, 0.1);
-    border-radius: 10px;
-    transition: transform 0.3s ease-in-out;
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #fff;
+    transition: transform 0.2s;
 }
 
 .flight-card:hover {
-    transform: scale(1.03);
+    transform: translateY(-5px);
 }
 
-.flight-card .btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    border-radius: 20px;
-    text-align: center;
+.airline-logo {
+
+    max-width: 70px;
+    max-height: 70px;
+    margin-right: 10px;
 }
 
-.flight-date {
-    text-align: center;
-    display: block;
-    margin: 0, auto;
-    font-size: 1.2rem;
+.destination {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
 }
 
-@media (max-width: 768px) {
-    .col-md-4 {
-        flex: 0 0 100%;
-        max-width: 100%;
+.checkin-status {
+    display: inline-block;
+    background-color: #d4edda;
+    color: #155724;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+@media (max-width: 767px) {
+    .flight-card {
+        margin-bottom: 16px;
+    }
+
+    .destination {
+        font-size: 1.25em;
+    }
+
+    .checkin-status {
+        font-size: 0.8em;
     }
 }
