@@ -6,7 +6,17 @@
     max-width: 80px;
     height: auto;
 }
+#completeBookingBtn{
+    background-color: #007bff;
+    font-size: 20px;
+    color: white;
+    border-radius: 20px;
+    position: relative;
+    margin-top: 10px;
+    width: max-content;
 
+
+}
 .btn-prim {
     background-color: #007bff;
     color: white;
