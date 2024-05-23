@@ -1,5 +1,7 @@
 body {
     font-family: Arial, sans-serif;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .container {
@@ -7,13 +9,15 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-}
+    }
 
 .search-form {
-
     max-width: 800px;
     width: 100%;
     background-color: #ffffff;
+
+justify-content: center;
+    align-items: center;
 }
 
 .search-form .input-group-text {

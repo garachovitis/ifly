@@ -24,19 +24,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <div class="card h-100 flight-card">
-                    <div class="card-body">
-                        <h5 class="card-title">Return Flight</h5>
-                        <img src="/img/{{returnFlight.airline}}.png" alt="{{returnFlight.airline}}" class="airline-logo">
-                        <p class="card-text">
-                            <strong>From:</strong> {{returnFlight.arrival}}<br>
-                            <strong>To:</strong> {{returnFlight.destination}}<br>
-                            <strong>Date:</strong> {{returnFlight.date}}<br>
-                            <strong>Price:</strong> {{returnFlight.price}}<strong>€</strong>
-                        </p>
+            {{#if returnFlight}}
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100 flight-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Return Flight</h5>
+                            <img src="/img/{{returnFlight.airline}}.png" alt="{{returnFlight.airline}}" class="airline-logo">
+                            <p class="card-text">
+                                <strong>From:</strong> {{returnFlight.arrival}}<br>
+                                <strong>To:</strong> {{returnFlight.destination}}<br>
+                                <strong>Date:</strong> {{returnFlight.date}}<br>
+                                <strong>Price:</strong> {{returnFlight.price}}<strong>€</strong>
+                            </p>
+                        </div>
                     </div>
                 </div>
+            {{/if}}
             </div>
         </div>
         <button type="button" id="completeBookingBtn" class="btn btn-success">Complete Booking</button>

@@ -267,8 +267,8 @@ export async function booking(request, response) {
       const bookedArrivalFlightID = request.cookies.bookedArrivalFlightID;
       const bookedReturnFlightID = request.cookies.bookedReturnFlightID;
 
-      if (!bookedArrivalFlightID || !bookedReturnFlightID) {
-          response.status(400).send("Both arrival and return flights must be booked.");
+      if (!bookedArrivalFlightID && !bookedReturnFlightID) {
+          response.status(400).send("At least one flight must be booked.");
           return;
       }
 
