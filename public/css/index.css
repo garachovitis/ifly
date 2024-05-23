@@ -3,7 +3,13 @@ body {
     flex-direction: column;
     justify-content: center;
 }
-
+.titleContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+}
 .container {
     display: flex;
     justify-content: center;
@@ -44,7 +50,7 @@ justify-content: center;
 
 .search-form .rounded-pill {
     font-size: 18px !important;
-    width: 30%;
+    width: 40%;
     border-radius: 20px !important;
 }
 

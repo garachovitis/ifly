@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h2>GO</h2>
+        <h2>Departure</h2>
         <div class="next-step-container">
             <button id="nextStepButton" class="btn btn-primary" disabled>Next Step</button>
         </div>
@@ -43,7 +43,7 @@
         
         {{#if returnFlights}}
             <hr>
-            <h2>RETURN</h2>
+            <h2>Return</h2>
             <div class="row">
                 {{#each returnFlights}}
                     <div class="col-md-4 mb-3">
@@ -80,28 +80,34 @@
         let arrivalFlightBooked = Cookies.get('bookedArrivalFlightID') ? true : false;
         let returnFlightBooked = Cookies.get('bookedReturnFlightID') ? true : false;
 
-        // Disable buttons for previously booked flights
-        if (arrivalFlightBooked) {
-            $(`button[data-flight-id="${Cookies.get('bookedArrivalFlightID')}"]`).prop('disabled', true).text('Booked');
+        function updateButtons() {
+            if (arrivalFlightBooked) {
+                $('button[data-flight-type="departure"]').text('Book').prop('disabled', false);
+                $(`button[data-flight-id="${Cookies.get('bookedArrivalFlightID')}"]`).prop('disabled', true).text('Booked');
+            }
+            if (returnFlightBooked) {
+                $('button[data-flight-type="return"]').text('Book').prop('disabled', false);
+                $(`button[data-flight-id="${Cookies.get('bookedReturnFlightID')}"]`).prop('disabled', true).text('Booked');
+            }
         }
-        if (returnFlightBooked) {
-            $(`button[data-flight-id="${Cookies.get('bookedReturnFlightID')}"]`).prop('disabled', true).text('Booked');
-        }
+
+        updateButtons();
 
         $('.book-button').click(function() {
             const flightType = $(this).data('flight-type');
             const flightID = $(this).data('flight-id');
 
-            Cookies.set(flightType === 'departure' ? 'bookedArrivalFlightID' : 'bookedReturnFlightID', flightID);
-
-            $(this).prop('disabled', true).text('Booked');
             if (flightType === 'departure') {
+                Cookies.set('bookedArrivalFlightID', flightID);
                 arrivalFlightBooked = true;
             } else {
+                Cookies.set('bookedReturnFlightID', flightID);
                 returnFlightBooked = true;
             }
 
-            if ((arrivalFlightBooked && (!returnFlightBooked || $('.book-button[data-flight-type="return"]:disabled').length > 0)) || (returnFlightBooked && $('.book-button[data-flight-type="departure"]:disabled').length > 0)) {
+            updateButtons();
+
+            if ((arrivalFlightBooked && (returnFlightBooked || $('.book-button[data-flight-type="return"]').length === 0)) || (returnFlightBooked && $('.book-button[data-flight-type="departure"]').length === 0)) {
                 $('#nextStepButton').prop('disabled', false);
             }
         });
