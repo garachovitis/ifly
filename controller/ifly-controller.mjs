@@ -62,17 +62,17 @@ export async function addFlight(request, response) {
        !flightData.arrival ||
        !flightData.destination ||
        !flightData.date ||
-       !flightData.AvSeats || 
+      //  !flightData.AvSeats || 
        !flightData.price
      ) {
        throw new Error("Missing or invalid flight data.");
      }
  
-     const AvSeats = parseInt(flightData.AvSeats, 10);
+    //  const AvSeats = parseInt(flightData.AvSeats, 10);
  
-     if (isNaN(AvSeats) || AvSeats < 1) {
-       throw new Error("Invalid number of available seats.");
-     }
+    //  if (isNaN(AvSeats) || AvSeats < 1) {
+    //    throw new Error("Invalid number of available seats.");
+    //  }
  
      const newFlight = new MyFlight(
        undefined, 
@@ -80,7 +80,7 @@ export async function addFlight(request, response) {
        flightData.arrival.toUpperCase(), 
        flightData.destination.toUpperCase(),
        flightData.date,
-       AvSeats, 
+      //  AvSeats, 
        parseFloat(flightData.price) 
      );
  

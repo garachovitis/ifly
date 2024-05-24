@@ -81,7 +81,7 @@ export let addFlight = (flightData) => {
                 arrival, 
                 destination, 
                 date, 
-                AvSeats, 
+                // AvSeats, 
                 price
             ) VALUES (?, ?, ?, ?, ?, ?)
     `);
@@ -92,7 +92,7 @@ export let addFlight = (flightData) => {
             flightData.arrival,
             flightData.destination,
             flightData.date,
-            flightData.AvSeats, 
+            // flightData.AvSeats, 
             flightData.price
         );
         console.log(`Flight added with ID: ${result.lastInsertRowid}`);

@@ -26,10 +26,10 @@
             <label for="date">Date</label>
             <input type="date" class="form-control" id="date">
         </div>
-        <div class="form-group">
+        {{!-- <div class="form-group">
             <label for="AvSeats">Available Seats</label>
             <input type="number" class="form-control" id="AvSeats" placeholder="Enter available seats (number)">
-        </div>
+        </div> --}}
         <div class="form-group">
             <label for="price">Price</label>
             <input type="number" class="form-control" id="price" placeholder="Enter price (€)">
@@ -48,7 +48,7 @@
         const arrival = document.getElementById('arrival').value.toUpperCase(); // Convert to uppercase for consistency
         const destination = document.getElementById('destination').value.toUpperCase();
         const date = document.getElementById('date').value;
-        const AvSeats = parseInt(document.getElementById('AvSeats').value, 10);
+        {{!-- const AvSeats = parseInt(document.getElementById('AvSeats').value, 10); --}}
         const price = parseFloat(document.getElementById('price').value);
 
         // Validation (Improved Error Messages)
@@ -76,10 +76,10 @@
                 isValid = false;
             }
         }
-        if (isNaN(AvSeats) || AvSeats < 1) {
+        {{!-- if (isNaN(AvSeats) || AvSeats < 1) {
             warnings.AvSeats = 'Available seats must be a number greater than 0.';
             isValid = false;
-        }
+        } --}}
         if (isNaN(price) || price <= 0) {
             warnings.price = 'Price must be a number greater than 0.';
             isValid = false;
@@ -109,7 +109,7 @@
                 arrival: arrival,
                 destination: destination,
                 date: date,
-                AvSeats: AvSeats,
+                {{!-- AvSeats: AvSeats, --}}
                 price: price
             };
 
