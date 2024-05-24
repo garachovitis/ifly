@@ -1,18 +1,13 @@
-//ifly-controller.mjs
-import { support } from '../model/better-sqlite/ifly-better.mjs';
 import { Flight as MyFlight } from '../model/flight.js'
-// import url from 'url';
 
 
-const model = await import(`../model/better-sqlite/ifly-better.mjs`);
+const model = await import(`../model/ifly-better.mjs`);
 
 
-//------------
 export async function renderNewFlightForm(request, response) {
    response.render("newflight",{renderNewFlightForm:renderNewFlightForm,model: process.env.MY_MODEL, _newflight: true}); 
  }
 
-//-----------
 export async function adminrender(req, res) { 
   try {
     const userId = req.session.userId;
@@ -21,7 +16,7 @@ export async function adminrender(req, res) {
       return;
     }
 
-    const flights = await model.getFlights(); // Fetch all flights (no user filtering)
+    const flights = await model.getFlights(); 
 
     res.render('admin', { flights, _admin: true });
   } catch (err) {
@@ -29,7 +24,6 @@ export async function adminrender(req, res) {
     res.status(500).send("An error occurred while fetching flights."); 
   }
 }
-
 
 
 export async function indexrender(request, response) {
@@ -56,7 +50,6 @@ export async function indexrender(request, response) {
  }
 }
 
-//-------------------------ADD FLIGHT--------------------------
 export async function addFlight(request, response) {
 
 
@@ -108,7 +101,7 @@ export async function renderLogin(request, response) {
           response.render("login", {_login: true , hideNav: true});
       }
       else {
-          response.redirect("/admin"); // User is already connected
+          response.redirect("/admin"); 
       }
   }
   catch (err) {
@@ -181,9 +174,8 @@ export async function search(request, response) {
       const _to = to.toUpperCase();
 
       const goFlights = await model.search(_from, _to, departure_date);
-      const returnFlights = return_date ? await model.search(_to, _from, return_date) : []; // Get return flights if a date is provided
+      const returnFlights = return_date ? await model.search(_to, _from, return_date) : []; 
 
-      // Use cookies for booked flight IDs
       const bookedArrivalFlightID = request.cookies.bookedArrivalFlightID || null;
       const bookedReturnFlightID = request.cookies.bookedReturnFlightID || null;
 
@@ -215,13 +207,13 @@ export async function removeFlight(req, res) {
         }
 
         const flightID = req.params.flightID; 
-        const wasDeleted = model.removeFlight(flightID, userId); // Pass userId, even though it's not used in the model
+        const wasDeleted = model.removeFlight(flightID, userId); 
 
         if (wasDeleted) {
-          const flights = await model.getFlights(); // Re-fetch all flights
-          res.render('admin', { flights, _admin: true }); // Re-render the admin page with updated data
+          const flights = await model.getFlights(); 
+          res.render('admin', { flights, _admin: true }); 
         } else {
-          res.status(404).send("Flight not found"); // Handle flight not found
+          res.status(404).send("Flight not found"); 
         }
   } catch (err) {
       console.error(err);
@@ -232,15 +224,15 @@ export async function removeFlight(req, res) {
 
 export async function myFlights(request, response) {
   try {
-    const userId = request.session.userId; // Get the logged-in user's ID
+    const userId = request.session.userId; 
 
     if (!userId) {
       response.redirect("/login");
       return;
     }
 
-    const flights = await model.getMyFlights(userId); // Fetch user's flights
-    response.render("myflights", { flights, _myflights: true }); // Render myflights.hbs
+    const flights = await model.getMyFlights(userId); 
+    response.render("myflights", { flights, _myflights: true }); 
   } catch (err) {
     console.error("Error fetching my flights:", err);
     response.status(500).send("An error occurred while fetching your flights.");
@@ -285,6 +277,8 @@ export async function booking(request, response) {
       response.status(500).send("Error fetching booking summary: " + err.message);
   }
 }
+
+
 
 export async function completeBooking(request, response) {
   try {

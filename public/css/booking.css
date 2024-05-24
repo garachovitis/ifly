@@ -8,10 +8,11 @@
 }
 #completeBookingBtn{
     background-color: #007bff;
-    font-size: 20px;
+    font-size: 23px;
     color: white;
     border-radius: 20px;
     position: relative;
+    
     margin-top: 10px;
     width: max-content;
 
