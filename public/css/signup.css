@@ -27,3 +27,17 @@
 #signup-form button:hover {
     background-color: #0056b3; 
 }
+
+@media (max-width: 768px) {
+    .form-wrapper {
+        padding: 15px;
+    }
+
+    .form-group input {
+        padding: 8px;
+    }
+
+    #login-form button {
+        padding: 8px;
+    }
+}
