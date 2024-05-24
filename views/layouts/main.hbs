@@ -117,15 +117,15 @@
                 const isAdmin = checkIfAdmin(); 
 
                 if (isAdmin) {
-                    window.location.href = '/admin'; // Redirect to admin page
+                    window.location.href = '/admin'; 
                 } else {
-                    window.location.href = '/index'; // Redirect to index page
+                    window.location.href = '/index'; 
                 }
             }
 
             function checkIfAdmin() {
 
-                return document.cookie.includes('userRole=admin'); // Adjust based on your setup
+                return document.cookie.includes('userRole=admin'); 
             }
             $(document).ready(function () {
                 $('.navbar-toggler').click(function () {

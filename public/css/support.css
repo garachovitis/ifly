@@ -8,12 +8,13 @@ body {
     border-top: 1px solid #e9ecef;
     margin-top: 40px;
 }
-.icon{
+
+.icon {
     width: 30px;
     height: 30px;
     margin: 0 10px;
-
 }
+
 .creator-info {
     text-align: center;
     margin-bottom: 20px;
@@ -34,4 +35,23 @@ body {
     font-size: 14px;
     color: #6c757d;
     margin-top: 10px;
+}
+
+.creator-info-box {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.creator-info-box p {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.icon-small {
+    width: 30px;
+    height: 30px;
+    margin: 0 5px;
 }

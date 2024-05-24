@@ -15,7 +15,7 @@
         <div class="d-flex flex-wrap justify-content-center">
             {{#each flights}}
                 <div class="btn flight-btn m-2">
-                    {{this.airline}} - {{this.arrival}} to {{this.destination}} - {{this.date}} - ${{this.price}} - Seats: {{this.AvSeats}}
+                    {{this.airline}} - {{this.arrival}} to {{this.destination}} - {{this.date}} - ${{this.price}} 
                     <button class="btn btn-danger delete-btn" onclick="deleteFlight('{{this.flightID}}')">
                         <i class="fas fa-trash-alt"></i>
                     </button>

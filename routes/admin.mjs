@@ -1,5 +1,4 @@
 
-//admin.mjs the route
 import express from 'express';
 const adminRouter = express.Router();
 
