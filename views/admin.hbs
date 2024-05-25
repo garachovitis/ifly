@@ -8,21 +8,35 @@
 </head>
 <body>
 
-        <h1 class="text-center mb-4">Admin Dashboard</h1>
-        <div class="text-center">
-            <a href="/newflight" class="btn btn-primary mb-3 add-flight-btn">Add Flight</a>
-        </div>
-        <div class="d-flex flex-wrap justify-content-center">
+    <h1 class="text-center mb-4">Admin Dashboard</h1>
+    <div class="text-center">
+        <a href="/newflight" class="btn btn-primary mb-3 add-flight-btn">Add Flight</a>
+    </div>
+    <div class="container">
+        <div class="row">
             {{#each flights}}
-                <div class="btn flight-btn m-2">
-                    {{this.airline}} - {{this.arrival}} to {{this.destination}} - {{this.date}} - ${{this.price}} 
-                    <button class="btn btn-danger delete-btn" onclick="deleteFlight('{{this.flightID}}')">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card flight-card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <img src="/img/{{this.airline}}.png" alt="{{this.airline}}" class="img-fluid mr-3 logo-img">
+                                <div>
+                                    <h5 class="card-title">{{this.arrival}} to {{this.destination}}</h5>
+                                    <p class="card-text">
+                                        Date: {{this.date}}<br>
+                                        Price: ${{this.price}}
+                                    </p>
+                                </div>
+                                <button class="btn btn-danger ml-auto delete-btn" onclick="deleteFlight('{{this.flightID}}')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             {{/each}}
         </div>
-
+    </div>
 
     <script>
         function deleteFlight(flightID) {
