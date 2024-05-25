@@ -3,6 +3,12 @@ body {
     flex-direction: column;
     justify-content: center;
 }
+.dropdown-menu {
+    width: 100%;
+}
+.dropdown-item {
+    cursor: pointer;
+}
 .titleContainer {
     display: flex;
     justify-content: center;

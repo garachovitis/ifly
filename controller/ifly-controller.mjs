@@ -35,19 +35,18 @@ export async function indexrender(request, response) {
     }
 
     const index = await model.getIndex(userId);
-    const airports = await model.getAllAirports();
 
     response.render('index', { 
       index: index, 
       model: process.env.MY_MODEL,  
-      _index: true, 
-      airports: airports
+      _index: true
     });
   } catch (err) {
     console.log(err);
     response.send(err);
   }
 }
+
 
 
 export async function addFlight(request, response) {

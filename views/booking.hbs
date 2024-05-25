@@ -1,3 +1,4 @@
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="/css/booking.css">
 </head>
+
 <body>
     <div class="container mt-5">
         <h2>Booking Summary</h2>
@@ -25,24 +27,40 @@
                 </div>
             </div>
             {{#if returnFlight}}
-                <div class="col-md-6 mb-3">
-                    <div class="card h-100 flight-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Return Flight</h5>
-                            <img src="/img/{{returnFlight.airline}}.png" alt="{{returnFlight.airline}}" class="airline-logo">
-                            <p class="card-text">
-                                <strong>From:</strong> {{returnFlight.arrival}}<br>
-                                <strong>To:</strong> {{returnFlight.destination}}<br>
-                                <strong>Date:</strong> {{returnFlight.date}}<br>
-                                <strong>Price:</strong> {{returnFlight.price}}<strong>€</strong>
-                            </p>
-                        </div>
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 flight-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Return Flight</h5>
+                        <img src="/img/{{returnFlight.airline}}.png" alt="{{returnFlight.airline}}" class="airline-logo">
+                        <p class="card-text">
+                            <strong>From:</strong> {{returnFlight.arrival}}<br>
+                            <strong>To:</strong> {{returnFlight.destination}}<br>
+                            <strong>Date:</strong> {{returnFlight.date}}<br>
+                            <strong>Price:</strong> {{returnFlight.price}}<strong>€</strong>
+                        </p>
                     </div>
                 </div>
+            </div>
             {{/if}}
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <div class="card total-price-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Total Price</h5>
+                        <p class="card-text">
+                            <strong>Total:</strong> <span id="totalPrice"></span><strong>€</strong>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-        <button type="button" id="completeBookingBtn" class="btn btn-success">Complete Booking</button>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button type="button" id="completeBookingBtn" class="btn btn-success">Complete Booking</button>
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
@@ -55,7 +73,7 @@
                     </button>
                 </div>
                 <div class="modal-body text-center">
-                    <p>Booking completed successfully! Have a nice trip.</p>
+                    <p>Booking completed successfully! Have a nice trip!</p>
                     <img src="/img/nice.gif" alt="Have a nice trip" class="img-fluid">
                 </div>
                 <div class="modal-footer">
@@ -70,55 +88,67 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
     <script>
-    document.getElementById('completeBookingBtn').addEventListener('click', function() {
-        const arrivalFlight = {
-            airline: "{{arrivalFlight.airline}}",
-            arrival: "{{arrivalFlight.arrival}}",
-            destination: "{{arrivalFlight.destination}}",
-            date: "{{arrivalFlight.date}}",
-            price: "{{arrivalFlight.price}}",
-            flightID: "{{arrivalFlight.flightID}}"
-        };
+    $(document).ready(function() {
+        const arrivalFlightPrice = parseFloat("{{arrivalFlight.price}}");
+        let totalPrice = arrivalFlightPrice;
 
-        const returnFlight = {
-            airline: "{{returnFlight.airline}}",
-            arrival: "{{returnFlight.arrival}}",
-            destination: "{{returnFlight.destination}}",
-            date: "{{returnFlight.date}}",
-            price: "{{returnFlight.price}}",
-            flightID: "{{returnFlight.flightID}}"
-        };
+        {{#if returnFlight}}
+        const returnFlightPrice = parseFloat("{{returnFlight.price}}");
+        totalPrice += returnFlightPrice;
+        {{/if}}
 
-        const flights = [arrivalFlight];
-        if (returnFlight.flightID) {
-            flights.push(returnFlight);
-        }
+        document.getElementById('totalPrice').innerText = totalPrice.toFixed(2);
 
-        console.log("Sending booking data:", { flights: flights });
+        document.getElementById('completeBookingBtn').addEventListener('click', function() {
+            const arrivalFlight = {
+                airline: "{{arrivalFlight.airline}}",
+                arrival: "{{arrivalFlight.arrival}}",
+                destination: "{{arrivalFlight.destination}}",
+                date: "{{arrivalFlight.date}}",
+                price: arrivalFlightPrice,
+                flightID: "{{arrivalFlight.flightID}}"
+            };
 
-        fetch('/complete-booking', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ flights: flights })
-        })
-        .then(response => {
-            console.log("Received response:", response);
-            return response.json();
-        })
-        .then(data => {
-            console.log("Received data:", data);
-            if (data.success) {
-                $('#bookingModal').modal('show');
-                document.getElementById('okBtn').addEventListener('click', function() {
-                    window.location.href = '/myflights';
-                });
-            } else {
-                alert('Booking failed. Please try again.');
+            const returnFlight = {
+                airline: "{{returnFlight.airline}}",
+                arrival: "{{returnFlight.arrival}}",
+                destination: "{{returnFlight.destination}}",
+                date: "{{returnFlight.date}}",
+                price: returnFlightPrice,
+                flightID: "{{returnFlight.flightID}}"
+            };
+
+            const flights = [arrivalFlight];
+            if (returnFlight.flightID) {
+                flights.push(returnFlight);
             }
-        })
-        .catch(error => console.error('Error:', error));
+
+            console.log("Sending booking data:", { flights: flights });
+
+            fetch('/complete-booking', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ flights: flights })
+            })
+            .then(response => {
+                console.log("Received response:", response);
+                return response.json();
+            })
+            .then(data => {
+                console.log("Received data:", data);
+                if (data.success) {
+                    $('#bookingModal').modal('show');
+                    document.getElementById('okBtn').addEventListener('click', function() {
+                        window.location.href = '/myflights';
+                    });
+                } else {
+                    alert('Booking failed. Please try again.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
     });
     </script>
 </body>

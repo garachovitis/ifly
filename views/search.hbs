@@ -8,68 +8,72 @@
 </head>
 <body>
     <div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center">
         <h2>Departure</h2>
         <div class="next-step-container">
             <button id="nextStepButton" class="btn btn-primary" disabled>Next Step</button>
         </div>
-        {{#if goFlights_not_found}}
-            <span class='text-danger'>Δεν βρέθηκαν πτήσεις αναχώρησης</span>
-        {{else}}
-            <div class="row">
-                {{#each goFlights}}
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100 flight-card">
-                            <div class="card-body">
-                                <img src="/img/{{this.airline}}.png" alt="{{this.airline}}" class="airline-logo">
-                                <p class="card-text">
-                                    <strong>From:</strong> {{this.arrival}}<br>
-                                    <strong>To:</strong> {{this.destination}}<br>
-                                    <strong>Date:</strong> {{this.date}}<br>
-                                    <strong>Price:</strong> {{this.price}}<strong>€</strong>
-                                </p>
-                                <button class="btn btn-primary book-button"
-                                        data-flight-type="departure"
-                                        data-flight-id="{{this.flightID}}"
-                                        data-arrival="{{this.arrival}}"
-                                        data-destination="{{this.destination}}"
-                                        data-date="{{this.date}}"
-                                        data-price="{{this.price}}">Book</button>
-                            </div>
-                        </div>
-                    </div>
-                {{/each}}
-            </div>
-        {{/if}}
-        
-        {{#if returnFlights}}
-            <hr>
-            <h2>Return</h2>
-            <div class="row">
-                {{#each returnFlights}}
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100 flight-card">
-                            <div class="card-body">
-                                <img src="/img/{{this.airline}}.png" alt="{{this.airline}}" class="airline-logo">
-                                <p class="card-text">
-                                    <strong>From:</strong> {{this.arrival}}<br>
-                                    <strong>To:</strong> {{this.destination}}<br>
-                                    <strong>Date:</strong> {{this.date}}<br>
-                                    <strong>Price:</strong> {{this.price}} <strong>€</strong>
-                                </p>
-                                <button class="btn btn-primary book-button"
-                                        data-flight-type="return"
-                                        data-flight-id="{{this.flightID}}"
-                                        data-arrival="{{this.arrival}}"
-                                        data-destination="{{this.destination}}"
-                                        data-date="{{this.date}}"
-                                        data-price="{{this.price}}">Book</button>
-                            </div>
-                        </div>
-                    </div>
-                {{/each}}
-            </div>
-        {{/if}}
     </div>
+    {{#if goFlights_not_found}}
+        <span class='text-danger'>Δεν βρέθηκαν πτήσεις αναχώρησης</span>
+    {{else}}
+        <div class="row">
+            {{#each goFlights}}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 flight-card">
+                        <div class="card-body">
+                            <img src="/img/{{this.airline}}.png" alt="{{this.airline}}" class="airline-logo">
+                            <p class="card-text">
+                                <strong>From:</strong> {{this.arrival}}<br>
+                                <strong>To:</strong> {{this.destination}}<br>
+                                <strong>Date:</strong> {{this.date}}<br>
+                                <strong>Price:</strong> {{this.price}}<strong>€</strong>
+                            </p>
+                            <button class="btn btn-primary book-button"
+                                    data-flight-type="departure"
+                                    data-flight-id="{{this.flightID}}"
+                                    data-arrival="{{this.arrival}}"
+                                    data-destination="{{this.destination}}"
+                                    data-date="{{this.date}}"
+                                    data-price="{{this.price}}">Book</button>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    {{/if}}
+    
+    {{#if returnFlights}}
+        <hr>
+        <h2>Return</h2>
+        <div class="row">
+            {{#each returnFlights}}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 flight-card">
+                        <div class="card-body">
+                            <img src="/img/{{this.airline}}.png" alt="{{this.airline}}" class="airline-logo">
+                            <p class="card-text">
+                                <strong>From:</strong> {{this.arrival}}<br>
+                                <strong>To:</strong> {{this.destination}}<br>
+                                <strong>Date:</strong> {{this.date}}<br>
+                                <strong>Price:</strong> {{this.price}} <strong>€</strong>
+                            </p>
+                            <button class="btn btn-primary book-button"
+                                    data-flight-type="return"
+                                    data-flight-id="{{this.flightID}}"
+                                    data-arrival="{{this.arrival}}"
+                                    data-destination="{{this.destination}}"
+                                    data-date="{{this.date}}"
+                                    data-price="{{this.price}}">Book</button>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    {{/if}}
+</div>
+
+   
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

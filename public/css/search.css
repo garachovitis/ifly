@@ -1,12 +1,12 @@
 .next-step-container {
-
-    position: absolute;
-    top: 15%;
-    right: 10%;
+    margin-right: 0;
 }
-#nextStepButton{
+
+#nextStepButton {
+    font-size: 19px;    
     border-radius: 20px;
 }
+
 :root {
     --primary-color: #007bff;
     --secondary-color: #cac4c4de;
@@ -42,12 +42,16 @@
     border-color: var(--primary-color);
     border-radius: 20px;
     text-align: center;
-    
 }
 
 @media (max-width: 768px) {
     .col-md-4 {
         flex: 0 0 100%;
         max-width: 100%;
+    }
+
+    .next-step-container {
+        margin-top: 10px;
+        text-align: right;
     }
 }
