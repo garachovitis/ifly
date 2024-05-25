@@ -56,12 +56,12 @@
             warnings.airline = 'Please enter an airline.';
             isValid = false;
         }
-        if (!/^[A-Z]{3}$/.test(arrival)) {
-            warnings.arrival = 'Arrival must be exactly 3 letters (e.g., JFK).';
+        if (!/^[A-Za-z]{3,}$/.test(arrival)) {
+            warnings.arrival = 'Arrival must be at least 3 characters long and contain only letters.';
             isValid = false;
         }
-        if (!/^[A-Z]{3}$/.test(destination)) {
-            warnings.destination = 'Destination must be exactly 3 letters (e.g., LHR).';
+        if (!/^[A-Za-z]{3,}$/.test(destination)) {
+            warnings.destination = 'Destination must be at least 3 characters long and contain only letters.';
             isValid = false;
         }
         if (!date) {

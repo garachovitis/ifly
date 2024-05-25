@@ -29,3 +29,17 @@ h2 {
     padding: 10px; 
     border-radius: 20px;
 }
+
+@media (max-width: 768px) {
+    .form-wrapper {
+        padding: 15px;
+    }
+
+    .form-group input {
+        padding: 8px;
+    }
+
+    #login-form button {
+        padding: 8px;
+    }
+}

@@ -29,26 +29,26 @@ export async function adminrender(req, res) {
 export async function indexrender(request, response) {
   try {
     const userId = request.session.userId;
- }
- catch (err) {
-    console.log(err);
-    response.redirect("/login");
-    return;
- }
- const userId = request.session.userId;
- if (userId === undefined || userId === null) {
-    response.redirect("/login");
-    return;      
- }
+    if (userId === undefined || userId === null) {
+      response.redirect("/login");
+      return;      
+    }
 
- try {
-    const index = await model.getIndex(userId)
-    response.render('index', { index: index, model: process.env.MY_MODEL,  _index: true });
- }
- catch (err) {
+    const index = await model.getIndex(userId);
+    const airports = await model.getAllAirports();
+
+    response.render('index', { 
+      index: index, 
+      model: process.env.MY_MODEL,  
+      _index: true, 
+      airports: airports
+    });
+  } catch (err) {
+    console.log(err);
     response.send(err);
- }
+  }
 }
+
 
 export async function addFlight(request, response) {
 
@@ -320,3 +320,5 @@ export async function completeBooking(request, response) {
 export async function supportrender(request, response) {
   response.render("support",{_support:true}); 
 }
+
+

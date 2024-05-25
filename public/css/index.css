@@ -63,6 +63,22 @@ justify-content: center;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
 }
+.suggestions {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+.suggestion-item {
+    padding: 8px;
+    cursor: pointer;
+}
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
 
 @media (max-width: 768px) {
     .search-form .row .col-md-5 {

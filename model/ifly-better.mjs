@@ -202,3 +202,19 @@ export async function bookFlight(userId, flightID) {
   export async function support(){
     
   }
+
+
+  export const getAllAirports = () => {
+    try {
+        const stmt = sql.prepare(`
+            SELECT DISTINCT arrival AS airport FROM flight
+            UNION
+            SELECT DISTINCT destination AS airport FROM flight
+        `);
+
+        const result = stmt.all();
+        return result.map(row => ({ airport: row.airport, code: row.code })); 
+    } catch (err) {
+        throw new Error(err);
+    }
+};
