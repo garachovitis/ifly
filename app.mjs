@@ -37,7 +37,6 @@ app.use(session({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Handlebars setup with helpers
 app.engine('hbs', exphbs.engine({
     defaultLayout: 'main',
     extname: 'hbs',

@@ -42,16 +42,16 @@
         event.preventDefault();
 
         let isValid = true;
-        const warnings = {}; // Store error messages
+        const warnings = {}; 
 
         const airline = document.getElementById('airline').value.toUpperCase(); 
-        const arrival = document.getElementById('arrival').value.toUpperCase(); // Convert to uppercase for consistency
+        const arrival = document.getElementById('arrival').value.toUpperCase(); 
         const destination = document.getElementById('destination').value.toUpperCase();
         const date = document.getElementById('date').value;
         const AvSeats = parseInt(document.getElementById('AvSeats').value, 10);
         const price = parseFloat(document.getElementById('price').value);
 
-        // Validation (Improved Error Messages)
+        
         if (!airline) {
             warnings.airline = 'Please enter an airline.';
             isValid = false;
@@ -96,7 +96,7 @@
                 }
             }
             errorContainer.textContent = errorMessages;
-            document.getElementById('newFlightForm').after(errorContainer); // Place error message after the form
+            document.getElementById('newFlightForm').after(errorContainer); 
         } else {
             const existingError = document.querySelector('.alert-danger');
             if (existingError) {

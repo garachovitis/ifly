@@ -1,4 +1,3 @@
-//ifly-better.mjs the model
 'use strict';
 
  import db from 'better-sqlite3';
@@ -161,12 +160,12 @@ export async function getFlights() {
     }
 }
 export let removeFlight = (flightID) => {
-    const stmt = sql.prepare('DELETE FROM flight WHERE flightID = ?'); // Remove user_id check
+    const stmt = sql.prepare('DELETE FROM flight WHERE flightID = ?'); 
     let info;
 
     try {
         info = stmt.run(flightID);
-        return info.changes > 0; // Return true if at least one row was affected
+        return info.changes > 0; 
     } catch (err) {
         console.error('Error deleting flight:', err);
         throw err; 
