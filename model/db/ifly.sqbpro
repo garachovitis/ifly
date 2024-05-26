@@ -1,11 +1,117 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/georgiosarachovitis/Desktop/ifly/model/db/ifly.sqlite" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1120"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,6:mainflight"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="flight" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="124"/><column index="2" value="139"/><column index="3" value="72"/><column index="4" value="37"/><column index="5" value="47"/><column index="6" value="50"/><column index="7" value="76"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">INSERT INTO flight (arrival, destination, date, price, flightID, AvSeats, airline)
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/georgiosarachovitis/Desktop/ifly/model/db/ifly.sqlite" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1120"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,6:mainflight"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="flight" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="94"/><column index="2" value="95"/><column index="3" value="72"/><column index="4" value="37"/><column index="5" value="47"/><column index="6" value="50"/><column index="7" value="76"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="sqlite_sequence" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="36"/><column index="2" value="27"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="user" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="24"/><column index="2" value="80"/><column index="3" value="300"/><column index="4" value="51"/><column index="5" value="47"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">INSERT INTO flight (arrival, destination, date, price, flightID, AvSeats, airline)
 VALUES
-('ATHENS', 'BERLIN', '2024-06-05', 55, 983, 30, 'AEGEAN'),
-('ATHENS', 'BERLIN', '2024-06-05', 60, 253, 25, 'SKYEXPRESS'),
-('ATHENS', 'BERLIN', '2024-06-05', 70, 190, 20, 'AMERICAN'),
-('BERLIN', 'ATHENS', '2024-06-10', 55, 299, 30, 'AEGEAN'),
-('BERLIN', 'ATHENS', '2024-06-10', 60, 243, 25, 'SKYEXPRESS'),
-('BERLIN', 'ATHENS', '2024-06-10', 70, 155, 20, 'AMERICAN'),
-('BERLIN', 'ATHENS', '2024-06-10', 80, 643, 15, 'SCOOT');
+('BERLIN', 'ATHENS', '2024-12-30', 75, 888, 20, 'AEGEAN'),
+('BERLIN', 'ATHENS', '2024-12-30', 80, 889, 25, 'SKYEXPRESS'),
+('BERLIN', 'ATHENS', '2024-12-30', 85, 890, 30, 'AMERICAN'),
 
-</sql><current_tab id="0"/></tab_sql></sqlb_project>
+('PARIS', 'ATHENS', '2024-12-30', 90, 891, 20, 'SCOOT'),
+('PARIS', 'ATHENS', '2024-12-30', 95, 892, 25, 'RYANAIR'),
+('PARIS', 'ATHENS', '2024-12-30', 100, 893, 30, 'AEGEAN'),
+
+('ROME', 'ATHENS', '2024-12-30', 105, 894, 20, 'SKYEXPRESS'),
+('ROME', 'ATHENS', '2024-12-30', 110, 895, 25, 'AMERICAN'),
+('ROME', 'ATHENS', '2024-12-30', 115, 896, 30, 'SCOOT'),
+
+('LONDON', 'ATHENS', '2024-12-30', 120, 897, 20, 'RYANAIR'),
+('LONDON', 'ATHENS', '2024-12-30', 125, 898, 25, 'AEGEAN'),
+('LONDON', 'ATHENS', '2024-12-30', 130, 899, 30, 'SKYEXPRESS'),
+
+('VIENNA', 'ATHENS', '2024-12-30', 135, 900, 20, 'AMERICAN'),
+('VIENNA', 'ATHENS', '2024-12-30', 140, 901, 25, 'SCOOT'),
+('VIENNA', 'ATHENS', '2024-12-30', 145, 902, 30, 'RYANAIR'),
+
+('MADRID', 'ATHENS', '2024-12-30', 150, 903, 20, 'AEGEAN'),
+('MADRID', 'ATHENS', '2024-12-30', 155, 904, 25, 'SKYEXPRESS'),
+('MADRID', 'ATHENS', '2024-12-30', 160, 905, 30, 'AMERICAN'),
+
+('AMSTERDAM', 'ATHENS', '2024-12-30', 165, 906, 20, 'SCOOT'),
+('AMSTERDAM', 'ATHENS', '2024-12-30', 170, 907, 25, 'RYANAIR'),
+('AMSTERDAM', 'ATHENS', '2024-12-30', 175, 908, 30, 'AEGEAN'),
+
+('DUBAI', 'ATHENS', '2024-12-30', 180, 909, 20, 'SKYEXPRESS'),
+('DUBAI', 'ATHENS', '2024-12-30', 185, 910, 25, 'AMERICAN'),
+('DUBAI', 'ATHENS', '2024-12-30', 190, 911, 30, 'SCOOT'),
+
+('NEW YORK', 'ATHENS', '2024-12-30', 195, 912, 20, 'RYANAIR'),
+('NEW YORK', 'ATHENS', '2024-12-30', 200, 913, 25, 'AEGEAN'),
+('NEW YORK', 'ATHENS', '2024-12-30', 205, 914, 30, 'SKYEXPRESS'),
+
+('TOKYO', 'ATHENS', '2024-12-30', 210, 915, 20, 'AMERICAN'),
+('TOKYO', 'ATHENS', '2024-12-30', 215, 916, 25, 'SCOOT'),
+('TOKYO', 'ATHENS', '2024-12-30', 220, 917, 30, 'RYANAIR'),
+
+('MOSCOW', 'ATHENS', '2024-12-30', 225, 918, 20, 'AEGEAN'),
+('MOSCOW', 'ATHENS', '2024-12-30', 230, 919, 25, 'SKYEXPRESS'),
+('MOSCOW', 'ATHENS', '2024-12-30', 235, 920, 30, 'AMERICAN'),
+
+('SYDNEY', 'ATHENS', '2024-12-30', 240, 921, 20, 'SCOOT'),
+('SYDNEY', 'ATHENS', '2024-12-30', 245, 922, 25, 'RYANAIR'),
+('SYDNEY', 'ATHENS', '2024-12-30', 250, 923, 30, 'AEGEAN'),
+
+('TORONTO', 'ATHENS', '2024-12-30', 255, 924, 20, 'SKYEXPRESS'),
+('TORONTO', 'ATHENS', '2024-12-30', 260, 925, 25, 'AMERICAN'),
+('TORONTO', 'ATHENS', '2024-12-30', 265, 926, 30, 'SCOOT'),
+
+('BARCELONA', 'ATHENS', '2024-12-30', 270, 927, 20, 'RYANAIR'),
+('BARCELONA', 'ATHENS', '2024-12-30', 275, 928, 25, 'AEGEAN'),
+('BARCELONA', 'ATHENS', '2024-12-30', 280, 929, 30, 'SKYEXPRESS'),
+
+('CAIRO', 'ATHENS', '2024-12-30', 285, 930, 20, 'AMERICAN'),
+('CAIRO', 'ATHENS', '2024-12-30', 290, 931, 25, 'SCOOT'),
+('CAIRO', 'ATHENS', '2024-12-30', 295, 932, 30, 'RYANAIR'),
+
+('ISTANBUL', 'ATHENS', '2024-12-30', 300, 933, 20, 'AEGEAN'),
+('ISTANBUL', 'ATHENS', '2024-12-30', 305, 934, 25, 'SKYEXPRESS'),
+('ISTANBUL', 'ATHENS', '2024-12-30', 310, 935, 30, 'AMERICAN'),
+
+('PRAGUE', 'ATHENS', '2024-12-30', 315, 936, 20, 'SCOOT'),
+('PRAGUE', 'ATHENS', '2024-12-30', 320, 937, 25, 'RYANAIR'),
+('PRAGUE', 'ATHENS', '2024-12-30', 325, 938, 30, 'AEGEAN'),
+
+('DUBLIN', 'ATHENS', '2024-12-30', 330, 939, 20, 'SKYEXPRESS'),
+('DUBLIN', 'ATHENS', '2024-12-30', 335, 940, 25, 'AMERICAN'),
+('DUBLIN', 'ATHENS', '2024-12-30', 340, 941, 30, 'SCOOT'),
+
+('HELSINKI', 'ATHENS', '2024-12-30', 345, 942, 20, 'RYANAIR'),
+('HELSINKI', 'ATHENS', '2024-12-30', 350, 943, 25, 'AEGEAN'),
+('HELSINKI', 'ATHENS', '2024-12-30', 355, 944, 30, 'SKYEXPRESS'),
+
+('OSLO', 'ATHENS', '2024-12-30', 360, 945, 20, 'AMERICAN'),
+('OSLO', 'ATHENS', '2024-12-30', 365, 946, 25, 'SCOOT'),
+('OSLO', 'ATHENS', '2024-12-30', 370, 947, 30, 'RYANAIR'),
+
+('STOCKHOLM', 'ATHENS', '2024-12-30', 375, 948, 20, 'AEGEAN'),
+('STOCKHOLM', 'ATHENS', '2024-12-30', 380, 949, 25, 'SKYEXPRESS'),
+('STOCKHOLM', 'ATHENS', '2024-12-30', 385, 950, 30, 'AMERICAN'),
+
+('COPENHAGEN', 'ATHENS', '2024-12-30', 390, 951, 20, 'SCOOT'),
+('COPENHAGEN', 'ATHENS', '2024-12-30', 395, 952, 25, 'RYANAIR'),
+('COPENHAGEN', 'ATHENS', '2024-12-30', 400, 953, 30, 'AEGEAN'),
+
+('BRUSSELS', 'ATHENS', '2024-12-30', 405, 954, 20, 'SKYEXPRESS'),
+('BRUSSELS', 'ATHENS', '2024-12-30', 410, 955, 25, 'AMERICAN'),
+('BRUSSELS', 'ATHENS', '2024-12-30', 415, 956, 30, 'SCOOT'),
+
+('ZURICH', 'ATHENS', '2024-12-30', 420, 957, 20, 'RYANAIR'),
+('ZURICH', 'ATHENS', '2024-12-30', 425, 958, 25, 'AEGEAN'),
+('ZURICH', 'ATHENS', '2024-12-30', 430, 959, 30, 'SKYEXPRESS'),
+
+('LISBON', 'ATHENS', '2024-12-30', 435, 960, 20, 'AMERICAN'),
+('LISBON', 'ATHENS', '2024-12-30', 440, 961, 25, 'SCOOT'),
+('LISBON', 'ATHENS', '2024-12-30', 445, 962, 30, 'RYANAIR'),
+
+('BUCHAREST', 'ATHENS', '2024-12-30', 450, 963, 20, 'AEGEAN'),
+('BUCHAREST', 'ATHENS', '2024-12-30', 455, 964, 25, 'SKYEXPRESS'),
+('BUCHAREST', 'ATHENS', '2024-12-30', 460, 965, 30, 'AMERICAN'),
+
+('SOFIA', 'ATHENS', '2024-12-30', 465, 966, 20, 'SCOOT'),
+('SOFIA', 'ATHENS', '2024-12-30', 470, 967, 25, 'RYANAIR'),
+('SOFIA', 'ATHENS', '2024-12-30', 475, 968, 30, 'AEGEAN'),
+
+('BELGRADE', 'ATHENS', '2024-12-30', 480, 969, 20, 'SKYEXPRESS'),
+('BELGRADE', 'ATHENS', '2024-12-30', 485, 970, 25, 'AMERICAN'),
+('BELGRADE', 'ATHENS', '2024-12-30', 490, 971, 30, 'SCOOT'),
+
+('WARSAW', 'ATHENS', '2024-12-30', 495, 972, 20, 'RYANAIR'),
+('WARSAW', 'ATHENS', '2024-12-30', 500, 973, 25, 'AEGEAN'),
+('WARSAW', 'ATHENS', '2024-12-30', 505, 974, 30, 'SKYEXPRESS');</sql><current_tab id="0"/></tab_sql></sqlb_project>
