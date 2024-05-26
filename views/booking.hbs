@@ -1,4 +1,3 @@
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -92,8 +91,9 @@
         const arrivalFlightPrice = parseFloat("{{arrivalFlight.price}}");
         let totalPrice = arrivalFlightPrice;
 
+        let returnFlightPrice = 0;
         {{#if returnFlight}}
-        const returnFlightPrice = parseFloat("{{returnFlight.price}}");
+        returnFlightPrice = parseFloat("{{returnFlight.price}}");
         totalPrice += returnFlightPrice;
         {{/if}}
 
@@ -109,7 +109,9 @@
                 flightID: "{{arrivalFlight.flightID}}"
             };
 
-            const returnFlight = {
+            let returnFlight = null;
+            {{#if returnFlight}}
+            returnFlight = {
                 airline: "{{returnFlight.airline}}",
                 arrival: "{{returnFlight.arrival}}",
                 destination: "{{returnFlight.destination}}",
@@ -117,9 +119,10 @@
                 price: returnFlightPrice,
                 flightID: "{{returnFlight.flightID}}"
             };
+            {{/if}}
 
             const flights = [arrivalFlight];
-            if (returnFlight.flightID) {
+            if (returnFlight) {
                 flights.push(returnFlight);
             }
 
