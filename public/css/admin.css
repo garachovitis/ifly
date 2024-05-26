@@ -3,16 +3,11 @@ body {
 }
 
 .container {
-    width: 960px;
-    margin: auto;
     padding-top: 20px;
-    
 }
 
 .card {
     width: 100%;
-    max-width: 350px;
-    margin: auto;
     border-radius: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -49,12 +44,25 @@ body {
     border-radius: 50%;
 }
 
-@media (max-width: 768px) {
-    .card {
-        max-width: 100%;
-    }
+.d-flex {
+    flex-wrap: nowrap;
+}
 
+@media (max-width: 768px) {
     .add-flight-btn, .delete-btn {
         font-size: 14px;
+    }
+
+    .d-flex {
+        flex-wrap: wrap;
+    }
+
+    .flight-info {
+        flex: 1 1 100%;
+    }
+
+    .delete-btn {
+        align-self: flex-end;
+        margin-top: 10px;
     }
 }

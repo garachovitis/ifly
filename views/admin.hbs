@@ -15,12 +15,12 @@
     <div class="container">
         <div class="row">
             {{#each flights}}
-                <div class="col-md-6 col-lg-4 mb-4">
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
                     <div class="card flight-card">
                         <div class="card-body">
-                            <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center flex-wrap">
                                 <img src="/img/{{this.airline}}.png" alt="{{this.airline}}" class="img-fluid mr-3 logo-img">
-                                <div>
+                                <div class="flight-info">
                                     <h5 class="card-title">{{this.arrival}} to {{this.destination}}</h5>
                                     <p class="card-text">
                                         Date: {{this.date}}<br>
