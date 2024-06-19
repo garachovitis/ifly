@@ -9,5 +9,10 @@ How to run:
 1. git clone repo
 2. npm install
 3. npm start
+admin page:
+
+username: admin
+pass: admin
+
 
 ![logo](https://github.com/garachovitis/ifly/assets/129487867/bb220a97-033f-4a1e-a9c6-9e9ed4ca75ee)
